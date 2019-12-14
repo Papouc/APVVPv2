@@ -1,0 +1,18 @@
+<resources>
+
+    <style name="NoActionBar" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" /> <!--ThemeOverlay.AppCompat.Dark.ActionBar-->
+
+     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance" >
+
+      <item name="android:textSize">25dp</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+</resources>

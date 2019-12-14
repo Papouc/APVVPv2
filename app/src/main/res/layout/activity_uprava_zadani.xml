@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.google.android.gms.samples.vision.ocrreader.UpravaZadaniActivity">
+
+    <TextView
+        android:id="@+id/InfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="68dp"
+        android:text="Prosím upravte vaší úlohu do původní podoby :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/PoleProUpravu"
+        android:layout_width="372dp"
+        android:layout_height="364dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="88dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/ReseniBut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="35dp"
+        android:text="Vyřešit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PoleProUpravu" />
+
+    <Button
+        android:id="@+id/DeleteBut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="35dp"
+        android:text="smazat"
+        app:layout_constraintStart_toEndOf="@+id/ReseniBut"
+        app:layout_constraintTop_toBottomOf="@+id/PoleProUpravu" />
+
+</android.support.constraint.ConstraintLayout>
