@@ -28,17 +28,16 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -53,9 +52,6 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import java.io.IOException;
 import java.util.Locale;
 import android.os.Handler;
-import android.widget.Toolbar;
-
-
 
 
 /**

@@ -1,9 +1,7 @@
 package com.google.android.gms.samples.vision.ocrreader;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 

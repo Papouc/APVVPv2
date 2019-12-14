@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1088636681966",
+    "firebase_url": "https://apvvp-dbb27.firebaseio.com",
+    "project_id": "apvvp-dbb27",
+    "storage_bucket": "apvvp-dbb27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088636681966:android:09bbb8d6a7fab55a24fdff",
+        "android_client_info": {
+          "package_name": "com.example.apvvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088636681966-qd4spu38bgufhcop221cq9cbplqsi3a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4AgIorCWcGPha9flptaWPia2NEdHuC7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088636681966-qd4spu38bgufhcop221cq9cbplqsi3a6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
