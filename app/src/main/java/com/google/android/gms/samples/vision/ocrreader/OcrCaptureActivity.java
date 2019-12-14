@@ -48,6 +48,11 @@ import com.google.android.gms.samples.vision.ocrreader.ui.camera.CameraSourcePre
 import com.google.android.gms.samples.vision.ocrreader.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -98,6 +103,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
 
     public static String Testak = "funguj prosím";
+    private DatabaseReference mDatabase;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -137,6 +143,31 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         boolean useFlash = false;
 
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("nevim");
+        mDatabase.setValue("jak se vede?");
+
+
+        // Read from the database
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.v("Cteni", "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.v("Cteni", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
