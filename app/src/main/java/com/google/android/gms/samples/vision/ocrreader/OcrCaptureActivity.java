@@ -103,7 +103,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
 
     public static String Testak = "funguj prosím";
-    private DatabaseReference mDatabase;
+    private DatabaseReference mainDatabase;
+    public static DatabaseReference garbageDatabase;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -145,12 +146,15 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("nevim");
-        mDatabase.setValue("jak se vede?");
+        mainDatabase = FirebaseDatabase.getInstance().getReference("nevim");
+       // mDatabase.setValue("jak se vede?");
+
+
+        garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference("ahoj");
 
 
         // Read from the database
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mainDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again

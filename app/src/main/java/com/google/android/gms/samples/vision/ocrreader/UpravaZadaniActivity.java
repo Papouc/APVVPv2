@@ -21,12 +21,22 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     final Handler handler = new Handler();
     public static ArrayList<String> ProPridaniDoHistorie = new ArrayList<>();
     public static ContentValues Dodatabaze = new ContentValues();
+    public static Button VyresBut;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uprava_zadani);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        VyresBut = (Button) findViewById(R.id.ReseniBut);
+        VyresBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZapisDoGarbage(NaskanovanaUloha);
+            }
+        });
+
         PoleProUlohu = (EditText) findViewById(R.id.PoleProUpravu);
         Button ButtonPridat = findViewById(R.id.ReseniBut);
         Intent intent3 = getIntent();
@@ -46,6 +56,14 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             }
         }, 300);
 
+
+
+
+    }
+
+    public void ZapisDoGarbage(String Tauloha) {
+
+        OcrCaptureActivity.garbageDatabase.setValue(Tauloha);
 
     }
 
