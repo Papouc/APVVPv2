@@ -146,15 +146,13 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
 
-        mainDatabase = FirebaseDatabase.getInstance().getReference("nevim");
+        mainDatabase = FirebaseDatabase.getInstance().getReference("110");
+        DatabaseReference mainDatabase1 = mainDatabase.child("Typ ulohy");
        // mDatabase.setValue("jak se vede?");
 
 
-
-
-
         // Read from the database
-        mainDatabase.addValueEventListener(new ValueEventListener() {
+        mainDatabase1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
