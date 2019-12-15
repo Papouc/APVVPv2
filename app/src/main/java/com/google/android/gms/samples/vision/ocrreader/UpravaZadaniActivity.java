@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class UpravaZadaniActivity extends AppCompatActivity {
@@ -22,6 +28,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     public static ArrayList<String> ProPridaniDoHistorie = new ArrayList<>();
     public static ContentValues Dodatabaze = new ContentValues();
     public static Button VyresBut;
+    public int random;
 
 
     @Override
@@ -30,12 +37,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         setContentView(R.layout.activity_uprava_zadani);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         VyresBut = (Button) findViewById(R.id.ReseniBut);
-        VyresBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ZapisDoGarbage(NaskanovanaUloha);
-            }
-        });
+
 
         PoleProUlohu = (EditText) findViewById(R.id.PoleProUpravu);
         Button ButtonPridat = findViewById(R.id.ReseniBut);
@@ -61,18 +63,22 @@ public class UpravaZadaniActivity extends AppCompatActivity {
 
     }
 
-    public void ZapisDoGarbage(String Tauloha) {
+    public void ZapisDoGarbage(String TaUloha) {
 
-        OcrCaptureActivity.garbageDatabase.setValue(Tauloha);
+        OcrCaptureActivity.garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(String.valueOf(random));
+        OcrCaptureActivity.garbageDatabase.setValue(TaUloha);
 
     }
 
 
     public  void VymazatZadani() {
-        OcrDetectorProcessor.GlobalUlohaText = "";
-        OcrCaptureActivity.TextProUpravu = "";
-        NaskanovanaUloha = "";
-        PoleProUlohu.setText("");
+        if (NaskanovanaUloha != null) {
+            OcrDetectorProcessor.GlobalUlohaText = null;
+            OcrCaptureActivity.TextProUpravu = null;
+            NaskanovanaUloha = null;
+            PoleProUlohu.setText(null);
+        }
+
     }
 
 
@@ -80,6 +86,8 @@ public class UpravaZadaniActivity extends AppCompatActivity {
 
     public  void UpravTextHackyCarky() {
 
+        Random rand = new Random();
+        random = rand.nextInt(32000);
 
         if (NaskanovanaUloha != null) {
 
@@ -173,7 +181,9 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             NaskanovanaUloha = NaskanovanaUloha.replace("ď", "d");
             NaskanovanaUloha = NaskanovanaUloha.replace("Č", "C");
             NaskanovanaUloha = NaskanovanaUloha.replace("č", "c");
-            NaskanovanaUloha = NaskanovanaUloha.toLowerCase();
+            NaskanovanaUloha = NaskanovanaUloha.replace("ý", "y");
+            NaskanovanaUloha = NaskanovanaUloha.replace("Ý", "Y");
+            //NaskanovanaUloha = NaskanovanaUloha.toLowerCase();
 
 
 
@@ -186,8 +196,14 @@ public class UpravaZadaniActivity extends AppCompatActivity {
 
             }
 
+            VyresBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ZapisDoGarbage(NaskanovanaUloha);
+                }
+            });
 
-            ProPridaniDoHistorie.add(NaskanovanaUloha);
+           // ProPridaniDoHistorie.add(NaskanovanaUloha);
 
 
 

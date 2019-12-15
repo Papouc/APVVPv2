@@ -150,7 +150,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
        // mDatabase.setValue("jak se vede?");
 
 
-        garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference("ahoj");
+
 
 
         // Read from the database
@@ -239,9 +239,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     }
 
     public  void NastartujProces() {
-        Intent intent2 = new Intent(this, UpravaZadaniActivity.class);
-        intent2.putExtra(EXTRA_TEXT, TextProUpravu);
-        startActivity(intent2);
+            Intent intent2 = new Intent(this, UpravaZadaniActivity.class);
+            intent2.putExtra(EXTRA_TEXT, TextProUpravu);
+            startActivity(intent2);
     }
 
     private void requestCameraPermission() {

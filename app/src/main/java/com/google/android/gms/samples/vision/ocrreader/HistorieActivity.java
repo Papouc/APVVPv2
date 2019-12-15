@@ -28,7 +28,7 @@ public class HistorieActivity extends AppCompatActivity {
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
-        HistoryList.setAdapter(arrayAdapter);
+         HistoryList.setAdapter(arrayAdapter);
         }
 
 
