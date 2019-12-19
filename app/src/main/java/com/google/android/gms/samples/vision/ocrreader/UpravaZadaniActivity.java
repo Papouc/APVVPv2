@@ -9,14 +9,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
-import java.util.Random;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
+import java.util.Calendar;
 
 public class UpravaZadaniActivity extends AppCompatActivity {
 
@@ -29,7 +34,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     public static ContentValues Dodatabaze = new ContentValues();
     public static Button VyresBut;
     public int random;
-
+    DatabaseHandler databaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         setContentView(R.layout.activity_uprava_zadani);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         VyresBut = (Button) findViewById(R.id.ReseniBut);
-
+        databaseHandler = new DatabaseHandler(this);
 
         PoleProUlohu = (EditText) findViewById(R.id.PoleProUpravu);
         Button ButtonPridat = findViewById(R.id.ReseniBut);
@@ -64,6 +69,13 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     }
 
     public void ZapisDoGarbage(String TaUloha) {
+
+        Date currentTime = Calendar.getInstance().getTime();
+        boolean isIserted = databaseHandler.insertData(TaUloha,String.valueOf(currentTime));
+        if (isIserted == true)
+            Toast.makeText(UpravaZadaniActivity.this,"Data Inserted", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(UpravaZadaniActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
 
         OcrCaptureActivity.garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(String.valueOf(random));
         OcrCaptureActivity.garbageDatabase.setValue(TaUloha);

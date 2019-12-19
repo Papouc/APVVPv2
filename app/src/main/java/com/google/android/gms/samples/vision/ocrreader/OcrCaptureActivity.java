@@ -143,7 +143,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         boolean autoFocus = true;
         boolean useFlash = false;
 
-        DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        //DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
 
         mainDatabase = FirebaseDatabase.getInstance().getReference("110");

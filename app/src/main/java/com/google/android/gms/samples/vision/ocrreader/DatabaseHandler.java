@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -20,26 +22,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
 
 
-    SQLiteDatabase database;
+
 
 
     public DatabaseHandler(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        database = getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //db.execSQL("CREATE TABLE "+TABLE_NAME+" ( "+COLUMN_ID+" TEXT, "+COLUMN_COUNTRY+" TEXT)");
+        //db.execSQL("CREATE TABLE "+TABLE_NAME+" ( "+COLUMN_ID+" TEXT, "+COLUMN_CAS+" TEXT)");
+        //db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+COLUMN_POLOZKA+" TEXT, "+COLUMN_CAS+" TEXT)" );
 
-       // db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+COLUMN_POLOZKA+" TEXT, "+COLUMN_CAS+" TEXT)" );
 
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" (" +COLUMN_ID+ " INTEGER PRIMARY KEY, " +COLUMN_POLOZKA+" TEXT, "+COLUMN_CAS+" TEXT)" );
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_POLOZKA, "fffffffffffffffffffffffff");
-
-        db.insert(TABLE_NAME, null, contentValues);
+         db.execSQL("CREATE TABLE "+TABLE_NAME+" (" +COLUMN_ID+ " INTEGER PRIMARY KEY, " +COLUMN_POLOZKA+" TEXT, "+COLUMN_CAS+" TEXT)");
+        //db.execSQL("create table " + TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,Uloha TEXT,CasZadani TEXT)");
 
     }
 
@@ -48,4 +45,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
         onCreate(db);
     }
+
+
+    public boolean insertData(String uloha, String cas) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_POLOZKA, uloha);
+        contentValues.put(COLUMN_CAS, cas);
+        long result = db.insert(TABLE_NAME, null, contentValues);
+        if (result == -1)
+            return false;
+        else
+            return true;
+    }
+
 }
