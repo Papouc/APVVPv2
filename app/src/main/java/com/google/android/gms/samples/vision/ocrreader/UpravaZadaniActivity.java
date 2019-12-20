@@ -215,7 +215,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
                 }
             });
 
-            ProPridaniDoHistorie.add(NaskanovanaUloha);
+
 
 
 

@@ -2,6 +2,7 @@ package com.google.android.gms.samples.vision.ocrreader;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -58,5 +59,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         else
             return true;
     }
+
+
+    public Cursor test() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from HistoryRecords", null);
+        return cursor;
+    }
+
 
 }
