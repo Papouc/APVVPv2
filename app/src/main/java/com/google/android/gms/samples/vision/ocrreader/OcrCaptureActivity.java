@@ -29,6 +29,8 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -96,11 +98,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     private ImageButton NastavBut;
    // public static EditText PreviewPole; // Zpřístupnit z OCRprocessor
-    public  static  Button SnimaciBut;
+    public  static FloatingActionButton SnimaciBut;
     public  static  String TextProUpravu;
     public  static  final  String EXTRA_TEXT = "TextID"; //com.example.application.example.EXTRA_TEXT
     public  static  ImageButton HistoryBut;
-
+    public static  FloatingActionButton ZoomButPlus;
+    public static  FloatingActionButton ZoomButMinus;
 
     public static String Testak = "funguj prosím";
     private DatabaseReference mainDatabase;
@@ -111,8 +114,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.ocr_capture);
 
+
         //PreviewPole = (EditText) findViewById(R.id.UlohaField)
-        SnimaciBut = (Button) findViewById(R.id.CaptureBut);
+        SnimaciBut = (FloatingActionButton) findViewById(R.id.CaptureButFloat);
         SnimaciBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +139,20 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 openNastaveni();
             }
         });
+        ZoomButPlus = (FloatingActionButton) findViewById(R.id.ZoomPlusBut);
+        ZoomButPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraSource.doZoom(1.01f);
+            }
+        });
+        ZoomButMinus = (FloatingActionButton) findViewById(R.id.ZoomMinusBut);
+        ZoomButMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraSource.doZoom(0.4f);
+            }
+        });
 
         preview = (CameraSourcePreview) findViewById(R.id.preview);
         graphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
@@ -149,6 +167,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         mainDatabase = FirebaseDatabase.getInstance().getReference("110");
         DatabaseReference mainDatabase1 = mainDatabase.child("Typ ulohy");
        // mDatabase.setValue("jak se vede?");
+
 
 
         // Read from the database
@@ -183,9 +202,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Snackbar.make(graphicOverlay, "Tap to Speak. Pinch/Stretch to zoom",
+       /* Snackbar.make(graphicOverlay, "Tap to Speak. Pinch/Stretch to zoom",
                 Snackbar.LENGTH_LONG)
-                .show();
+                .show();*/
 
         // Set up the Text To Speech engine.
         TextToSpeech.OnInitListener listener =
@@ -325,7 +344,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         cameraSource =
                 new CameraSource.Builder(getApplicationContext(), textRecognizer)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(1280, 1024)
+                .setRequestedPreviewSize(1280, 1024) // rozliseni (puvodni 1280 * 1024)
                 .setRequestedFps(2.0f)
                 .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
                 .setFocusMode(autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO : null)
@@ -526,8 +545,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
          */
         @Override
         public void onScaleEnd(ScaleGestureDetector detector) {
+            Log.d("testik",String.valueOf(detector.getScaleFactor()));
             if (cameraSource != null) {
-                cameraSource.doZoom(detector.getScaleFactor());
+                cameraSource.doZoom(1.0f);
             }
         }
     }

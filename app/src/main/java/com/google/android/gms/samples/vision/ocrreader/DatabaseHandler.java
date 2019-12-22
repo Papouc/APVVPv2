@@ -61,9 +61,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public Cursor test() {
+    public Cursor readDat() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from HistoryRecords", null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_NAME, null);
         return cursor;
     }
 

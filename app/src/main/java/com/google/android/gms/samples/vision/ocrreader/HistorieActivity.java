@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 
 public class HistorieActivity extends AppCompatActivity {
@@ -26,28 +28,34 @@ public class HistorieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historie);
 
-        db = new DatabaseHandler(this);
-        HistoryList = (ListView) findViewById(R.id.HistoryList);
 
-        showHistory();
+            db = new DatabaseHandler(this);
+
+            HistoryList = (ListView) findViewById(R.id.HistoryList);
+
+            showHistory();
 
 
     }
 
     public void showHistory() {
-        Cursor cursor = db.test();
+        Cursor cursor = db.readDat();
 
-        if (cursor.moveToFirst()) {
-            ulohy = new String[cursor.getCount()];
-            int i = 0;
-            do {
-                ulohy[i] = cursor.getString(1);
-                i++;
-            } while (cursor.moveToNext());
+        if (cursor.getCount() != 0) { // když v databázi něco je
+            if (cursor.moveToFirst()) {
+                ulohy = new String[cursor.getCount()];
+                int i = 0;
+                do {
+                    ulohy[i] = cursor.getString(1);
+                    i++;
+                } while (cursor.moveToNext());
+            }
+            arrayList = new ArrayList<String>(Arrays.asList(ulohy));
+            Collections.reverse(arrayList);
+            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
+            HistoryList.setAdapter(arrayAdapter);
+
         }
-
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ulohy);
-        HistoryList.setAdapter(arrayAdapter);
 
     }
 

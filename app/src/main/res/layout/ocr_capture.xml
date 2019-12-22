@@ -9,12 +9,27 @@
     android:keepScreenOn="true">
 
 
+    <com.google.android.gms.samples.vision.ocrreader.ui.camera.CameraSourcePreview
+        android:id="@+id/preview"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.gms.samples.vision.ocrreader.ui.camera.GraphicOverlay
+            android:id="@+id/graphicOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.gms.samples.vision.ocrreader.ui.camera.CameraSourcePreview>
+
     <ImageButton
         android:id="@+id/HistoryTlac"
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:layout_marginEnd="60dp"
         android:adjustViewBounds="true"
+        android:backgroundTint="#48E0E0"
         android:contentDescription="@string/Settings"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,35 +42,51 @@
         android:layout_height="54dp"
         android:layout_marginEnd="1dp"
         android:adjustViewBounds="true"
+        android:backgroundTint="#48E0E0"
         android:contentDescription="@string/Settings"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/geariconpic" />
 
-    <Button
-        android:id="@+id/CaptureBut"
-        android:layout_width="91dp"
-        android:layout_height="52dp"
-        android:text="@string/Capture"
-        app:layout_constraintBottom_toTopOf="@+id/preview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.gms.samples.vision.ocrreader.ui.camera.CameraSourcePreview
-        android:id="@+id/preview"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/CaptureButFloat"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="170dp"
+        android:layout_marginBottom="90dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/CaptureBut"
-        app:layout_constraintTop_toBottomOf="@+id/CaptureBut">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/camera" />
 
-        <com.google.android.gms.samples.vision.ocrreader.ui.camera.GraphicOverlay
-            android:id="@+id/graphicOverlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ZoomPlusBut"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="400dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabCustomSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/plus" />
 
-    </com.google.android.gms.samples.vision.ocrreader.ui.camera.CameraSourcePreview>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ZoomMinusBut"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="340dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabCustomSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/minus" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
