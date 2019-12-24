@@ -43,7 +43,7 @@
         <activity
             android:name=".OcrCaptureActivity"
             android:label="APVVP"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

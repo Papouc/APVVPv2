@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/topLayout"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
@@ -51,26 +51,34 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/CaptureButFloat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="400dp"
         android:layout_marginEnd="170dp"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="40dp"
         android:clickable="true"
         android:focusable="true"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/camera" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ZoomPlusBut"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="400dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="180dp"
+        android:layout_marginStart="340dp"
+        android:layout_marginTop="0dp"
         android:clickable="true"
         android:focusable="true"
         app:fabCustomSize="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/plus" />
@@ -79,13 +87,18 @@
         android:id="@+id/ZoomMinusBut"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="340dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="180dp"
+        android:layout_marginStart="340dp"
+        android:layout_marginTop="140dp"
         android:clickable="true"
         android:focusable="true"
         app:fabCustomSize="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:srcCompat="@drawable/minus" />
 
 

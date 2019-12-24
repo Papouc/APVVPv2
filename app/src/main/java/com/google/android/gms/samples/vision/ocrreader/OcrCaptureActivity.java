@@ -25,16 +25,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -104,10 +113,16 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public  static  ImageButton HistoryBut;
     public static  FloatingActionButton ZoomButPlus;
     public static  FloatingActionButton ZoomButMinus;
+    public static ConstraintLayout CaptureLayout;
 
-    public static String Testak = "funguj prosím";
+
     private DatabaseReference mainDatabase;
     public static DatabaseReference garbageDatabase;
+
+
+    int height;
+    int width;
+    int realHeight;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -153,6 +168,47 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 cameraSource.doZoom(0.4f);
             }
         });
+
+        CaptureLayout = (ConstraintLayout) findViewById(R.id.topLayout);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(CaptureLayout);
+
+      /*  Resources r = getResources();
+        float dip = 400f;
+        float px400 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+        Log.d("testik", String.valueOf(width));*/
+
+
+
+        if (width == 0 && height == 0) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            height = displayMetrics.heightPixels;
+            width = displayMetrics.widthPixels;
+            realHeight = height + getNavigationBarHeight();
+        }
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //Landscape
+            constraintSet.setMargin(SnimaciBut.getId(),ConstraintSet.TOP, Math.round(realHeight/ 2f));
+            constraintSet.setMargin(SnimaciBut.getId(),ConstraintSet.BOTTOM, Math.round(180));
+            constraintSet.setMargin(ZoomButPlus.getId(),ConstraintSet.TOP, Math.round(width/2f));
+            constraintSet.setMargin(ZoomButMinus.getId(),ConstraintSet.TOP, Math.round(width/2f));
+            constraintSet.setMargin(ZoomButPlus.getId(),ConstraintSet.START, Math.round(0));
+            constraintSet.setMargin(ZoomButPlus.getId(),ConstraintSet.END, Math.round(realHeight/2.5f));
+            constraintSet.setMargin(ZoomButMinus.getId(),ConstraintSet.START, Math.round(realHeight/2.5f));
+            constraintSet.setMargin(ZoomButMinus.getId(),ConstraintSet.END, Math.round(0));
+            constraintSet.applyTo(CaptureLayout);
+        } else {
+            //Portrait
+            constraintSet.setMargin(SnimaciBut.getId(),ConstraintSet.TOP, Math.round(realHeight/1.7f));
+            constraintSet.setMargin(ZoomButPlus.getId(),ConstraintSet.TOP, Math.round(realHeight/200f));
+            constraintSet.setMargin(ZoomButMinus.getId(),ConstraintSet.TOP, Math.round(realHeight/5f));
+            constraintSet.setMargin(ZoomButPlus.getId(),ConstraintSet.END, Math.round(width/8f));
+            constraintSet.setMargin(ZoomButMinus.getId(),ConstraintSet.END, Math.round(width/8f));
+            constraintSet.applyTo(CaptureLayout);
+        }
 
         preview = (CameraSourcePreview) findViewById(R.id.preview);
         graphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
@@ -227,6 +283,21 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * showing a "Snackbar" message of why the permission is needed then
      * sending the request.
      */
+
+    private int getNavigationBarHeight() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            int usableHeight = metrics.heightPixels;
+            getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+            int realHeight = metrics.heightPixels;
+            if (realHeight > usableHeight)
+                return realHeight - usableHeight;
+            else
+                return 0;
+        }
+        return 0;
+    }
 
     public void openHistory() {
         Intent intent = new Intent(this, HistorieActivity.class);
