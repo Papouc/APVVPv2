@@ -28,6 +28,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -50,6 +52,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -66,6 +69,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.security.Policy;
 import java.util.Locale;
 import android.os.Handler;
 
@@ -115,7 +119,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static  FloatingActionButton ZoomButMinus;
     public static ConstraintLayout CaptureLayout;
 
-
     private DatabaseReference mainDatabase;
     public static DatabaseReference garbageDatabase;
 
@@ -123,6 +126,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     int height;
     int width;
     int realHeight;
+
+    public static boolean autoFocus;
+    public static boolean useFlash;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -169,6 +175,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             }
         });
 
+
+
         CaptureLayout = (ConstraintLayout) findViewById(R.id.topLayout);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(CaptureLayout);
@@ -177,6 +185,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         float dip = 400f;
         float px400 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
         Log.d("testik", String.valueOf(width));*/
+
 
 
 
@@ -214,8 +223,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         graphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
 
         // Set good defaults for capturing text.
-        boolean autoFocus = true;
-        boolean useFlash = false;
+        autoFocus = true;
+        useFlash = false;
 
         //DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
@@ -254,6 +263,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         } else {
             requestCameraPermission();
         }
+
+
 
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
@@ -297,6 +308,16 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 return 0;
         }
         return 0;
+    }
+
+    private void flashLightOn() {
+        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
+        try {
+            String cameraId = cameraManager.getCameraIdList()[0];
+            cameraManager.setTorchMode(cameraId, true);
+        } catch (CameraAccessException e) {
+        }
     }
 
     public void openHistory() {

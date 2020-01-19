@@ -35,6 +35,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     public static Button VyresBut;
     public int random;
     DatabaseHandler databaseHandler;
+    char[] abeceda = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +61,53 @@ public class UpravaZadaniActivity extends AppCompatActivity {
                         VymazatZadani();
                     }
                 });
+
             }
         }, 300);
 
 
 
+        VyresBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                if (NaskanovanaUloha != null && checkString(PoleProUlohu.getText().toString()) == true) {
+                    ZapisDoGarbage(PoleProUlohu.getText().toString());
+                } else if (PoleProUlohu.getText().toString() != null) {
+                   if (checkString(PoleProUlohu.getText().toString()) == true) {
+                       ZapisDoGarbage(PoleProUlohu.getText().toString());
+                   } else {
+                       Toast.makeText(UpravaZadaniActivity.this,"Špatný formát", Toast.LENGTH_LONG).show();
+                   }
+                } else {
+                    Toast.makeText(UpravaZadaniActivity.this,"Špatný formát", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
+
+
+    private static boolean checkString(String str) {
+        char ch;
+        boolean capitalFlag = false;
+        boolean lowerCaseFlag = false;
+        boolean numberFlag = false;
+        for(int i=0;i < str.length();i++) {
+            ch = str.charAt(i);
+            if( Character.isDigit(ch)) {
+                numberFlag = true;
+            }
+            else if (Character.isUpperCase(ch)) {
+                capitalFlag = true;
+            } else if (Character.isLowerCase(ch)) {
+                lowerCaseFlag = true;
+            }
+            if(numberFlag && capitalFlag && lowerCaseFlag)
+                return true;
+        }
+        return false;
     }
 
     public void ZapisDoGarbage(String TaUloha) {
@@ -208,20 +250,15 @@ public class UpravaZadaniActivity extends AppCompatActivity {
 
             }
 
-            VyresBut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ZapisDoGarbage(NaskanovanaUloha);
-                }
-            });
-
-
 
 
 
 
 
         }
+
+
+
         }
 
     }
