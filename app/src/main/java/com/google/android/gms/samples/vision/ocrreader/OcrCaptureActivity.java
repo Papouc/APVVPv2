@@ -111,10 +111,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     private ImageButton NastavBut;
    // public static EditText PreviewPole; // Zpřístupnit z OCRprocessor
-    public  static FloatingActionButton SnimaciBut;
-    public  static  String TextProUpravu;
-    public  static  final  String EXTRA_TEXT = "TextID"; //com.example.application.example.EXTRA_TEXT
-    public  static  ImageButton HistoryBut;
+    public static FloatingActionButton SnimaciBut;
+    public static  String TextProUpravu;
+    public static  final  String EXTRA_TEXT = "TextID"; //com.example.application.example.EXTRA_TEXT
+    public static  ImageButton HistoryBut;
     public static  FloatingActionButton ZoomButPlus;
     public static  FloatingActionButton ZoomButMinus;
     public static ConstraintLayout CaptureLayout;
