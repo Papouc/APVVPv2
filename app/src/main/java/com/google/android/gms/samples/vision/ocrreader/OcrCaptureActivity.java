@@ -398,6 +398,14 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         System.out.println("The max value is "+ max);
 
 
+        if (max<0.5) {
+            /* Bohužel tuto úlohu zatím neumíme stránka */
+            Log.d("bohuzel", "toto nejde vyresit");
+        } else {
+            /* Stažení výsledků z databáze atd... */
+            Log.d("skvele", "toto jde vyresit");
+        }
+
 
         //Log.d("pozice", String.valueOf(pozice));
        // Log.d("pozice", String.valueOf(Arrays.asList(podobn).indexOf(max)));
