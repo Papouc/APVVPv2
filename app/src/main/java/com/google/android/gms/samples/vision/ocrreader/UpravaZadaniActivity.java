@@ -82,6 +82,8 @@ public class UpravaZadaniActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(UpravaZadaniActivity.this,"Špatný formát", Toast.LENGTH_LONG).show();
                 }
+
+                OcrCaptureActivity.RozdelNaSlova(PoleProUlohu.getText().toString());
             }
         });
 

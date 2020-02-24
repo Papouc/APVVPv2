@@ -70,7 +70,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.security.Policy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
 import android.os.Handler;
 
 
@@ -108,6 +116,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * Initializes the UI and creates the detector pipeline.
      */
     final Handler handler = new Handler();
+    public static Handler handler2 = new Handler();
 
     private ImageButton NastavBut;
    // public static EditText PreviewPole; // Zpřístupnit z OCRprocessor
@@ -129,6 +138,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     public static boolean autoFocus;
     public static boolean useFlash;
+
+    public static ArrayList<String> baf = new ArrayList<String>();
+    public static int testint = 0;
+
+    public static int Poc = 0;
+    public static String string1;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -174,6 +189,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 cameraSource.doZoom(0.4f);
             }
         });
+
 
 
 
@@ -229,28 +245,35 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         //DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
 
-        mainDatabase = FirebaseDatabase.getInstance().getReference("110");
-        DatabaseReference mainDatabase1 = mainDatabase.child("Typ ulohy");
-       // mDatabase.setValue("jak se vede?");
 
 
 
-        // Read from the database
-        mainDatabase1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.v("Cteni", "Value is: " + value);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.v("Cteni", "Failed to read value.", error.toException());
-            }
-        });
+
+
+        // Tohle je starej lehce funkcni model
+        /*for (int fn = 0; fn <= 577; fn ++) {
+            mainDatabase = FirebaseDatabase.getInstance().getReference(String.valueOf(fn));
+            DatabaseReference mainDatabase1 = mainDatabase.child("Zadani");
+
+            // Read from the database
+            mainDatabase1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    String value = dataSnapshot.getValue(String.class);
+                    Log.v("Cteni", "Value is: " + value);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.v("Cteni", "Failed to read value.", error.toException());
+                }
+            });
+
+        }*/
 
 
 
@@ -287,6 +310,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                     }
                 };
         tts = new TextToSpeech(this.getApplicationContext(), listener);
+
+
+        CtiZdatabaze();
+
     }
 
     /**
@@ -294,6 +321,139 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * showing a "Snackbar" message of why the permission is needed then
      * sending the request.
      */
+
+
+    public static void CtiZdatabaze() {
+
+        final DatabaseReference HlavniDatabaze = FirebaseDatabase.getInstance().getReference();
+
+        final ArrayList<String> local = new ArrayList<String>();
+
+        HlavniDatabaze.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    String value = String.valueOf(dataSnapshot1.child("Zadani").getValue());
+
+
+                    local.add(value);
+
+                    Ukradni(local);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private static int countWords(String str){
+
+        int wordCount = 0;
+
+        //if string is null, word count is 0
+        if(str == null)
+            return wordCount;
+
+        //remove leading and trailing white spaces first
+        str = str.trim();
+
+        //if string contained all the spaces, word count is 0
+        if(str.equals(""))
+            return wordCount;
+
+        //split the string by one or more space
+        String[] temp = str.split("\\s+");
+
+        //number of array elements is equal to the words
+        return temp.length;
+    }
+
+    public static void Ukradni(ArrayList<String> Ojebavac) {
+       baf = Ojebavac;
+    }
+
+
+    public static void RozdelNaSlova(String ToCoChciRozdelit) {
+
+        double [] podobn = new double[baf.size()];
+        for (int zt = 0; zt <= baf.size() - 2; zt++) {
+
+            //Log.d("cqr", String.valueOf(cosineSimilarity(baf.get(zt), ToCoChciRozdelit)));
+            podobn[zt] = cosineSimilarity(baf.get(zt), ToCoChciRozdelit);
+        }
+
+        double max = podobn[0];
+        for (int counter = 1; counter < podobn.length; counter++){
+            if(max<podobn[counter]){
+                max=podobn[counter]; //swapping
+                podobn[counter]=podobn[0];
+            }
+        }
+        System.out.println("The max value is "+ max);
+
+
+
+        //Log.d("pozice", String.valueOf(pozice));
+       // Log.d("pozice", String.valueOf(Arrays.asList(podobn).indexOf(max)));
+
+
+    }
+
+    public static Map<String, Integer> getTermFrequencyMap(String[] terms) {
+        Map<String, Integer> termFrequencyMap = new HashMap<>();
+        for (String term : terms) {
+            Integer n = termFrequencyMap.get(term);
+            n = (n == null) ? 1 : ++n;
+            termFrequencyMap.put(term, n);
+        }
+        return termFrequencyMap;
+    }
+
+    /**
+     * @param text1
+     * @param text2
+     * @return cosine similarity of text1 and text2
+     */
+    public static double cosineSimilarity(String text1, String text2) {
+        //Get vectors
+        Map<String, Integer> a = getTermFrequencyMap(text1.split("\\W+"));
+        Map<String, Integer> b = getTermFrequencyMap(text2.split("\\W+"));
+
+        //Get unique words from both sequences
+        HashSet<String> intersection = new HashSet<>(a.keySet());
+        intersection.retainAll(b.keySet());
+
+        double dotProduct = 0, magnitudeA = 0, magnitudeB = 0;
+
+        //Calculate dot product
+        for (String item : intersection) {
+            dotProduct += a.get(item) * b.get(item);
+        }
+
+        //Calculate magnitude a
+        for (String k : a.keySet()) {
+            magnitudeA += Math.pow(a.get(k), 2);
+        }
+
+        //Calculate magnitude b
+        for (String k : b.keySet()) {
+            magnitudeB += Math.pow(b.get(k), 2);
+        }
+
+        //return cosine similarity
+        return dotProduct / Math.sqrt(magnitudeA * magnitudeB);
+    }
+
+
+
+
+
 
     private int getNavigationBarHeight() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
