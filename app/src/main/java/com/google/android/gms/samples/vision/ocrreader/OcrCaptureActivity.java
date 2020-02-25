@@ -381,7 +381,26 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     public static void RozdelNaSlova(String ToCoChciRozdelit) {
 
-        double [] podobn = new double[baf.size()];
+
+        ArrayList<Double> podobnList = new ArrayList<Double>();
+
+        for (int qu = 0; qu <= baf.size()- 1; qu++) {
+            podobnList.add(cosineSimilarity(baf.get(qu), ToCoChciRozdelit));
+        }
+
+        double Max = Collections.max(podobnList);
+        Log.d("test","Nasel jsem max shodu : " +  String.valueOf(Max));
+
+        for (int psat = 0; psat <= podobnList.size() - 1; psat++){
+            if (podobnList.get(psat) == Max) {
+                Log.d("test", "nasel jsem na miste : " + String.valueOf(psat));
+                break;
+            }
+        }
+
+
+        /*
+        double [] podobn = new double[]{};
         for (int zt = 0; zt <= baf.size() - 2; zt++) {
 
             //Log.d("cqr", String.valueOf(cosineSimilarity(baf.get(zt), ToCoChciRozdelit)));
@@ -398,18 +417,26 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         System.out.println("The max value is "+ max);
 
 
+
         if (max<0.5) {
-            /* Bohužel tuto úlohu zatím neumíme stránka */
             Log.d("bohuzel", "toto nejde vyresit");
         } else {
-            /* Stažení výsledků z databáze atd... */
+
             Log.d("skvele", "toto jde vyresit");
         }
+
+        String[] PodobnStr = new String[]{};
+        for (int cnt = 0; cnt <= podobn.length - 2; cnt++) {
+            PodobnStr[cnt] = String.valueOf(podobn[cnt]);
+        }
+
+
+       // Log.d("StringQ", "Podobnost Stringem :" + PodobnStr[693] + " Podobnost doublem : " + String.valueOf(podobn[693]));
 
 
         //Log.d("pozice", String.valueOf(pozice));
        // Log.d("pozice", String.valueOf(Arrays.asList(podobn).indexOf(max)));
-
+  */
 
     }
 
