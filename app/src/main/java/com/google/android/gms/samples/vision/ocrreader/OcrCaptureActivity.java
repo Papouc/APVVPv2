@@ -381,7 +381,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     public static void RozdelNaSlova(String ToCoChciRozdelit) {
 
-
         ArrayList<Double> podobnList = new ArrayList<Double>();
 
         for (int qu = 0; qu <= baf.size()- 1; qu++) {
@@ -391,52 +390,48 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         double Max = Collections.max(podobnList);
         Log.d("test","Nasel jsem max shodu : " +  String.valueOf(Max));
 
-        for (int psat = 0; psat <= podobnList.size() - 1; psat++){
-            if (podobnList.get(psat) == Max) {
-                Log.d("test", "nasel jsem na miste : " + String.valueOf(psat));
-                break;
-            }
-        }
-
-
-        /*
-        double [] podobn = new double[]{};
-        for (int zt = 0; zt <= baf.size() - 2; zt++) {
-
-            //Log.d("cqr", String.valueOf(cosineSimilarity(baf.get(zt), ToCoChciRozdelit)));
-            podobn[zt] = cosineSimilarity(baf.get(zt), ToCoChciRozdelit);
-        }
-
-        double max = podobn[0];
-        for (int counter = 1; counter < podobn.length; counter++){
-            if(max<podobn[counter]){
-                max=podobn[counter]; //swapping
-                podobn[counter]=podobn[0];
-            }
-        }
-        System.out.println("The max value is "+ max);
-
-
-
-        if (max<0.5) {
-            Log.d("bohuzel", "toto nejde vyresit");
+        if (Max < 0.5) {
+            Log.d("bohuzel", "toto nejde vyresit"); // stranka strasne nas to mrzi, work in progress
         } else {
+            Log.d("skvele", "toto jde vyresit"); // jdeme na to
 
-            Log.d("skvele", "toto jde vyresit");
+            int indexik = 0;
+
+            for (int psat = 0; psat <= podobnList.size() - 1; psat++){
+                if (podobnList.get(psat) == Max) {
+                    indexik = psat;
+                    Log.d("test", "nasel jsem na miste : " + String.valueOf(indexik));
+                    break;
+                }
+            }
+
+            NajdiVysledek(indexik);
         }
 
-        String[] PodobnStr = new String[]{};
-        for (int cnt = 0; cnt <= podobn.length - 2; cnt++) {
-            PodobnStr[cnt] = String.valueOf(podobn[cnt]);
-        }
 
 
-       // Log.d("StringQ", "Podobnost Stringem :" + PodobnStr[693] + " Podobnost doublem : " + String.valueOf(podobn[693]));
+    }
+
+   public static void NajdiVysledek(int Indexicek) {
+
+        int id = Indexicek;
+       DatabaseReference VysledekDatabaze;
+       VysledekDatabaze = FirebaseDatabase.getInstance().getReference().child(String.valueOf(id));
+
+       VysledekDatabaze.child("Vysledek").addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               String TenVysledek = String.valueOf(dataSnapshot.getValue());
+               Log.d("VasVysledek", "Vas vysledek je : " + TenVysledek);
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+           }
+       });
 
 
-        //Log.d("pozice", String.valueOf(pozice));
-       // Log.d("pozice", String.valueOf(Arrays.asList(podobn).indexOf(max)));
-  */
 
     }
 
