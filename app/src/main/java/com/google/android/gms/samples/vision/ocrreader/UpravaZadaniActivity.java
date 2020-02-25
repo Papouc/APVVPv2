@@ -37,6 +37,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     DatabaseHandler databaseHandler;
     char[] abeceda = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         VyresBut = (Button) findViewById(R.id.ReseniBut);
         databaseHandler = new DatabaseHandler(this);
+        OcrCaptureActivity.mContext = this;
 
         PoleProUlohu = (EditText) findViewById(R.id.PoleProUpravu);
         Button ButtonPridat = findViewById(R.id.ReseniBut);
@@ -84,6 +86,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
                 }
 
                 OcrCaptureActivity.RozdelNaSlova(PoleProUlohu.getText().toString());
+
             }
         });
 

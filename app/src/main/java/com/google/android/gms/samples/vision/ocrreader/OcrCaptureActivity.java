@@ -145,6 +145,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static int Poc = 0;
     public static String string1;
 
+
+    public static Context mContext;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -431,9 +434,14 @@ public final class OcrCaptureActivity extends AppCompatActivity {
            }
        });
 
+       Intent Zamer = new Intent(mContext, ShowVysledek.class);
+       mContext.startActivity(Zamer);
+
 
 
     }
+
+
 
     public static Map<String, Integer> getTermFrequencyMap(String[] terms) {
         Map<String, Integer> termFrequencyMap = new HashMap<>();
