@@ -30,6 +30,9 @@ import android.content.res.Resources;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -145,9 +148,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static int Poc = 0;
     public static String string1;
 
-
     public static Context mContext;
     public static String TenhleVysledekFaktPlati;
+    public boolean MamInternet;
+    public static boolean MuzuResit;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -252,9 +256,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
 
 
-
-
-
         // Tohle je starej lehce funkcni model
         /*for (int fn = 0; fn <= 577; fn ++) {
             mainDatabase = FirebaseDatabase.getInstance().getReference(String.valueOf(fn));
@@ -296,6 +297,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
+
        /* Snackbar.make(graphicOverlay, "Tap to Speak. Pinch/Stretch to zoom",
                 Snackbar.LENGTH_LONG)
                 .show();*/
@@ -314,9 +316,15 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                     }
                 };
         tts = new TextToSpeech(this.getApplicationContext(), listener);
+        Log.d("internet",String.valueOf(isOnline()));
 
-
-        CtiZdatabaze();
+        if (isOnline() == true) {
+            MuzuResit = true;
+            CtiZdatabaze();
+        }  else  {
+            MuzuResit = false;
+            Toast.makeText(this, "Internetové připojení nebylo nalezeno. Připojte se prosím k internetu a restartujte aplikaci.", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -326,6 +334,15 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * sending the request.
      */
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static void CtiZdatabaze() {
 
@@ -385,33 +402,39 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     public static void RozdelNaSlova(String ToCoChciRozdelit) {
 
-        ArrayList<Double> podobnList = new ArrayList<Double>();
+        if (MuzuResit == true) {
 
-        for (int qu = 0; qu <= baf.size()- 1; qu++) {
-            podobnList.add(cosineSimilarity(baf.get(qu), ToCoChciRozdelit));
-        }
+            ArrayList<Double> podobnList = new ArrayList<Double>();
 
-        double Max = Collections.max(podobnList);
-        Log.d("test","Nasel jsem max shodu : " +  String.valueOf(Max));
-
-        if (Max < 0.5) {
-            Log.d("bohuzel", "toto nejde vyresit"); // stranka strasne nas to mrzi, work in progress
-            Intent ZamerMrziNasTo = new Intent(mContext, MocNasToMrzi.class);
-            mContext.startActivity(ZamerMrziNasTo);
-        } else {
-            Log.d("skvele", "toto jde vyresit"); // jdeme na to
-
-            int indexik = 0;
-
-            for (int psat = 0; psat <= podobnList.size() - 1; psat++){
-                if (podobnList.get(psat) == Max) {
-                    indexik = psat;
-                    Log.d("test", "nasel jsem na miste : " + String.valueOf(indexik));
-                    break;
-                }
+            for (int qu = 0; qu <= baf.size() - 1; qu++) {
+                podobnList.add(cosineSimilarity(baf.get(qu), ToCoChciRozdelit));
             }
 
-            NajdiVysledek(indexik);
+            double Max = Collections.max(podobnList);
+            Log.d("test", "Nasel jsem max shodu : " + String.valueOf(Max));
+
+            if (Max < 0.7) {
+                Log.d("bohuzel", "toto nejde vyresit"); // stranka strasne nas to mrzi, work in progress
+                Intent ZamerMrziNasTo = new Intent(mContext, MocNasToMrzi.class);
+                mContext.startActivity(ZamerMrziNasTo);
+            } else {
+                Log.d("skvele", "toto jde vyresit"); // jdeme na to
+
+                int indexik = 0;
+
+                for (int psat = 0; psat <= podobnList.size() - 1; psat++) {
+                    if (podobnList.get(psat) == Max) {
+                        indexik = psat;
+                        Log.d("test", "nasel jsem na miste : " + String.valueOf(indexik));
+                        break;
+                    }
+                }
+
+                NajdiVysledek(indexik);
+            }
+        } else {
+            Intent Zamer2 = new Intent(mContext, MocNasToMrzi.class);
+            mContext.startActivity(Zamer2);
         }
 
 

@@ -138,6 +138,11 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             OcrCaptureActivity.TextProUpravu = null;
             NaskanovanaUloha = null;
             PoleProUlohu.setText(null);
+        } else if (PoleProUlohu.getText() != null) {
+            OcrDetectorProcessor.GlobalUlohaText = null;
+            OcrCaptureActivity.TextProUpravu = null;
+            NaskanovanaUloha = null;
+            PoleProUlohu.setText(null);
         }
 
     }
