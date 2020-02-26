@@ -16,4 +16,5 @@
     <string name="Settings">set</string>
     <string name="ImageSettingsImage">ImageSettingsImage</string>
     <string name="title_activity_show_vysledek">ShowVysledek</string>
+    <string name="title_activity_moc_nas_to_mrzi">MocNasToMrzi</string>
 </resources>

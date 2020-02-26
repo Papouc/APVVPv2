@@ -18,8 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
         <activity
+            android:name=".MocNasToMrzi"
+            android:label="Omlouváme se"
+            android:parentActivityName=".UpravaZadaniActivity"
+            android:theme="@style/NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.google.android.gms.samples.vision.ocrreader.UpravaZadaniActivity" />
+        </activity>
+        <activity
             android:name=".ShowVysledek"
             android:parentActivityName=".UpravaZadaniActivity"
+            android:label="Výsledek"
             android:theme="@style/NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

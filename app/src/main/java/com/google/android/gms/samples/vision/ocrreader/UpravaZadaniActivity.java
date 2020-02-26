@@ -79,10 +79,10 @@ public class UpravaZadaniActivity extends AppCompatActivity {
                    if (checkString(PoleProUlohu.getText().toString()) == true) {
                        ZapisDoGarbage(PoleProUlohu.getText().toString());
                    } else {
-                       Toast.makeText(UpravaZadaniActivity.this,"Špatný formát", Toast.LENGTH_LONG).show();
+                       Log.d("format", "spatny format");
                    }
                 } else {
-                    Toast.makeText(UpravaZadaniActivity.this,"Špatný formát", Toast.LENGTH_LONG).show();
+                    Log.d("format", "spatny format");
                 }
 
                 OcrCaptureActivity.RozdelNaSlova(PoleProUlohu.getText().toString());
@@ -120,9 +120,11 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         Date currentTime = Calendar.getInstance().getTime();
         boolean isIserted = databaseHandler.insertData(TaUloha,String.valueOf(currentTime));
         if (isIserted == true)
-            Toast.makeText(UpravaZadaniActivity.this,"Data Inserted", Toast.LENGTH_LONG).show();
+            //Toast.makeText(UpravaZadaniActivity.this,"Data Inserted", Toast.LENGTH_LONG).show();
+            Log.d("Data", "Data inserted");
         else
-            Toast.makeText(UpravaZadaniActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
+            //Toast.makeText(UpravaZadaniActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
+        Log.d("Data", "Data inserted");
 
         OcrCaptureActivity.garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(String.valueOf(random));
         OcrCaptureActivity.garbageDatabase.setValue(TaUloha);

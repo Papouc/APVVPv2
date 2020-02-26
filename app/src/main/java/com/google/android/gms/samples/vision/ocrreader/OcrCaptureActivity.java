@@ -147,6 +147,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
 
     public static Context mContext;
+    public static String TenhleVysledekFaktPlati;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -395,6 +396,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         if (Max < 0.5) {
             Log.d("bohuzel", "toto nejde vyresit"); // stranka strasne nas to mrzi, work in progress
+            Intent ZamerMrziNasTo = new Intent(mContext, MocNasToMrzi.class);
+            mContext.startActivity(ZamerMrziNasTo);
         } else {
             Log.d("skvele", "toto jde vyresit"); // jdeme na to
 
@@ -426,6 +429,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                String TenVysledek = String.valueOf(dataSnapshot.getValue());
                Log.d("VasVysledek", "Vas vysledek je : " + TenVysledek);
+               Finale(TenVysledek);
            }
 
            @Override
@@ -434,10 +438,18 @@ public final class OcrCaptureActivity extends AppCompatActivity {
            }
        });
 
-       Intent Zamer = new Intent(mContext, ShowVysledek.class);
-       mContext.startActivity(Zamer);
 
 
+
+
+
+    }
+
+    public static void Finale(String UzKonecneVysledek) {
+        TenhleVysledekFaktPlati = UzKonecneVysledek;
+        Intent Zamer = new Intent(mContext, ShowVysledek.class);
+        //Zamer.putExtra("Vysledecek", UzKonecneVysledek);
+        mContext.startActivity(Zamer);
 
     }
 
