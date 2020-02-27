@@ -8,7 +8,7 @@
 
     <Switch
         android:id="@+id/switch1"
-        android:layout_width="390dp"
+        android:layout_width="0dp"
         android:layout_height="66dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
@@ -22,9 +22,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_marginTop="60dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Switch
         android:id="@+id/switch2"
-        android:layout_width="390dp"
+        android:layout_width="0dp"
         android:layout_height="66dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="64dp"
@@ -48,12 +57,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginTop="60dp"
-        android:background="?android:attr/listDivider"
+    <Button
+        android:id="@+id/RemoveADSBut"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="155dp"
+        android:layout_marginEnd="10dp"
+        android:text="Odstranit reklamy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/DonateBut"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="215dp"
+        android:layout_marginEnd="10dp"
+        android:text="Donate"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

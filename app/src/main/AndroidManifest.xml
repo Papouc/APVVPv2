@@ -19,7 +19,7 @@
         android:theme="@style/Theme.AppCompat">
         <activity
             android:name=".MocNasToMrzi"
-            android:label="Omlouváme se"
+            android:label="Výsledek"
             android:parentActivityName=".UpravaZadaniActivity"
             android:theme="@style/NoActionBar">
             <meta-data
@@ -47,7 +47,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Nastav"
-            android:label="Nastaveni"
+            android:label="Nastavení"
             android:parentActivityName=".OcrCaptureActivity"
             android:screenOrientation="portrait" />
 

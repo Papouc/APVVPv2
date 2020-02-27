@@ -1,6 +1,9 @@
 package com.google.android.gms.samples.vision.ocrreader;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +40,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     public int random;
     DatabaseHandler databaseHandler;
     char[] abeceda = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-
+    public ImageButton infotlac ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         VyresBut = (Button) findViewById(R.id.ReseniBut);
         databaseHandler = new DatabaseHandler(this);
         OcrCaptureActivity.mContext = this;
+
 
         PoleProUlohu = (EditText) findViewById(R.id.PoleProUpravu);
         Button ButtonPridat = findViewById(R.id.ReseniBut);
@@ -67,6 +72,13 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             }
         }, 300);
 
+        infotlac = (ImageButton)findViewById(R.id.InfoBut);
+        infotlac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCreateDialog().show();
+            }
+        });
 
 
         VyresBut.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +104,19 @@ public class UpravaZadaniActivity extends AppCompatActivity {
 
     }
 
+    public Dialog onCreateDialog() {
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Úloha by neměla obsahovat žádnou diakritiku, speciální znaky ani smajlíky :-).")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        // Create the AlertDialog object and return it
+        return builder.create();
+    }
 
 
     private static boolean checkString(String str) {

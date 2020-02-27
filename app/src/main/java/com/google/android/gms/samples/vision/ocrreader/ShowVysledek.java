@@ -23,9 +23,9 @@ public class ShowVysledek extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_vysledek);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*Intent intent4 = getIntent();
         TohleUzJeFaktVysledek = intent4.getStringExtra("Vysledecek");*/
@@ -34,7 +34,7 @@ public class ShowVysledek extends AppCompatActivity {
 
         TohleUzJeFaktVysledek = OcrCaptureActivity.TenhleVysledekFaktPlati;
 
-        PolickoNaVysledecek.setText(TohleUzJeFaktVysledek);
+        PolickoNaVysledecek.setText("Výsledek vaší úlohy je :       " + TohleUzJeFaktVysledek);
 
     }
 

@@ -2,9 +2,12 @@ package com.google.android.gms.samples.vision.ocrreader;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,7 +38,21 @@ public class HistorieActivity extends AppCompatActivity {
 
             showHistory();
 
+            HistoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Toast.makeText(HistorieActivity.this, String.valueOf(arrayAdapter.getItem(position)), Toast.LENGTH_LONG).show();
+                     VyberZHistorie(String.valueOf(arrayAdapter.getItem(position)));
+                }
+            });
 
+
+    }
+
+    public void VyberZHistorie(String JakaUloha) {
+        Intent clickIntent = new Intent(this, UpravaZadaniActivity.class);
+        clickIntent.putExtra(OcrCaptureActivity.EXTRA_TEXT, JakaUloha);
+        startActivity(clickIntent);
     }
 
     public void showHistory() {

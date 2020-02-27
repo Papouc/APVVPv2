@@ -6,13 +6,25 @@
     android:layout_height="match_parent"
     tools:context="com.google.android.gms.samples.vision.ocrreader.UpravaZadaniActivity">
 
+    <ImageButton
+        android:id="@+id/InfoBut"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="52dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/InfoText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/hintgreyresized" />
+
     <TextView
         android:id="@+id/InfoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="68dp"
-        android:text="Prosím upravte vaší úlohu do původní podoby :"
+        android:layout_marginTop="53dp"
+        android:text="Upravte prosím vaši úlohu do původní podoby :"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,13 +33,13 @@
         android:layout_width="0dp"
         android:layout_height="331dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="25dp"
         android:ems="10"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/InfoText" />
 
     <Button
         android:id="@+id/ReseniBut"
