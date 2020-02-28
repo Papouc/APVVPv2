@@ -149,10 +149,12 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             Log.d("Data", "Data inserted");
         else
             //Toast.makeText(UpravaZadaniActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
-        Log.d("Data", "Data inserted");
+        Log.d("Data", "Data not inserted");
 
-        OcrCaptureActivity.garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(String.valueOf(random));
-        OcrCaptureActivity.garbageDatabase.setValue(TaUloha);
+        if (OcrCaptureActivity.DoGarbage == true) {
+            OcrCaptureActivity.garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(String.valueOf(random));
+            OcrCaptureActivity.garbageDatabase.setValue(TaUloha);
+        }
 
     }
 

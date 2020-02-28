@@ -7,7 +7,7 @@
     tools:context="com.google.android.gms.samples.vision.ocrreader.Nastav">
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/rotSwitch"
         android:layout_width="0dp"
         android:layout_height="66dp"
         android:layout_marginStart="4dp"
@@ -17,6 +17,7 @@
         android:textSize="20dp"
         android:thumbTint="#33FFFF"
         android:trackTint="#00A7A7"
+        android:checked="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/hisSwitch"
         android:layout_width="0dp"
         android:layout_height="66dp"
         android:layout_marginStart="4dp"
@@ -43,6 +44,7 @@
         android:textSize="20dp"
         android:thumbTint="#33FFFF"
         android:trackTint="#00A7A7"
+        android:checked="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -152,12 +153,22 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static String TenhleVysledekFaktPlati;
     public boolean MamInternet;
     public static boolean MuzuResit;
+    public static boolean MamOtacet = true;
+    public static DatabaseNastavHandler databaseNastavHandler;
+    public static boolean DoGarbage = false;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.ocr_capture);
 
+        databaseNastavHandler = new DatabaseNastavHandler(this);
+
+        if (MamOtacet == true) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        }
 
         //PreviewPole = (EditText) findViewById(R.id.UlohaField)
         SnimaciBut = (FloatingActionButton) findViewById(R.id.CaptureButFloat);
@@ -334,6 +345,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * sending the request.
      */
 
+
+
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -415,11 +428,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
             if (Max < 0.7) {
                 Log.d("bohuzel", "toto nejde vyresit"); // stranka strasne nas to mrzi, work in progress
+                DoGarbage = true;
                 Intent ZamerMrziNasTo = new Intent(mContext, MocNasToMrzi.class);
                 mContext.startActivity(ZamerMrziNasTo);
             } else {
                 Log.d("skvele", "toto jde vyresit"); // jdeme na to
-
+                DoGarbage = false;
                 int indexik = 0;
 
                 for (int psat = 0; psat <= podobnList.size() - 1; psat++) {
