@@ -60,27 +60,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/RemoveADSBut"
+        android:id="@+id/DonateBut"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="155dp"
+        android:layout_marginEnd="10dp"
+        android:text="Donate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/ReklamyBut"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="215dp"
         android:layout_marginEnd="10dp"
         android:text="Odstranit reklamy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/DonateBut"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="215dp"
-        android:layout_marginEnd="10dp"
-        android:text="Donate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

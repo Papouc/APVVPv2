@@ -1,6 +1,5 @@
 package com.google.android.gms.samples.vision.ocrreader;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
@@ -8,9 +7,6 @@ import android.os.Bundle;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.formats.MediaView;
@@ -18,14 +14,10 @@ import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -60,11 +52,9 @@ public class ShowVysledek extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-        MobileAds.initialize(this, ADMOB_APP_ID);
+        //MobileAds.initialize(this, ADMOB_APP_ID);
 
-        refresh = findViewById(R.id.btn_refresh);
-        startVideoAdsMuted = findViewById(R.id.cb_start_muted);
-        videoStatus = findViewById(R.id.tv_video_status);
+
 
 
         TextView PolickoNaVysledecek = findViewById(R.id.SemSVysledkem);
@@ -73,18 +63,20 @@ public class ShowVysledek extends AppCompatActivity {
 
         PolickoNaVysledecek.setText("Výsledek vaší úlohy je :       " + TohleUzJeFaktVysledek);
 
-
+        /*refresh = findViewById(R.id.btn_refreshM);
+        startVideoAdsMuted = findViewById(R.id.cb_start_mutedM);
+        videoStatus = findViewById(R.id.tv_video_statusM);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View unusedView) {
                 refreshAd();
             }
         });
-        refreshAd();
+        refreshAd();*/
 
     }
 
-    private void populateUnifiedNativeAdView(UnifiedNativeAd nativeAd, UnifiedNativeAdView adView) {
+    /*private void populateUnifiedNativeAdView(UnifiedNativeAd nativeAd, UnifiedNativeAdView adView) {
         // Get the video controller for the ad. One will always be provided, even if the ad doesn't
         // have a video asset.
         VideoController vc = nativeAd.getVideoController();
@@ -179,9 +171,9 @@ public class ShowVysledek extends AppCompatActivity {
         }
 
         adView.setNativeAd(nativeAd);
-    }
+    }*/
 
-    private void refreshAd() {
+    /*private void refreshAd() {
         refresh.setEnabled(false);
 
         AdLoader.Builder builder = new AdLoader.Builder(this, ADMOB_AD_UNIT_ID);
@@ -190,7 +182,7 @@ public class ShowVysledek extends AppCompatActivity {
             // OnUnifiedNativeAdLoadedListener implementation.
             @Override
             public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                FrameLayout frameLayout = findViewById(R.id.fl_adplaceholder);
+                FrameLayout frameLayout = findViewById(R.id.fl_adplaceholderM);
                 UnifiedNativeAdView adView = (UnifiedNativeAdView) getLayoutInflater().inflate(R.layout.ad_unified, null);
                 populateUnifiedNativeAdView(unifiedNativeAd, adView);
                 frameLayout.removeAllViews();
@@ -220,7 +212,7 @@ public class ShowVysledek extends AppCompatActivity {
         adLoader.loadAd(new AdRequest.Builder().build());
 
         videoStatus.setText("");
-    }
+    }*/
 
 
 

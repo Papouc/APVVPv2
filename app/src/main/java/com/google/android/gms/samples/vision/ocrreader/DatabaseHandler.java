@@ -23,9 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
 
 
-    private static final String TABLE_NAME1 = "Nastaveni";
-    private static final String COLUMN_ROTACE = "Rotace";
-    private static final String COLUMN_HISTORIE = "Historie";
+
 
 
     public DatabaseHandler(@Nullable Context context) {

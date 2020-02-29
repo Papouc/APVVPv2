@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -39,6 +40,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -153,22 +155,34 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static String TenhleVysledekFaktPlati;
     public boolean MamInternet;
     public static boolean MuzuResit;
-    public static boolean MamOtacet = true;
-    public static DatabaseNastavHandler databaseNastavHandler;
     public static boolean DoGarbage = false;
+    public static boolean ZmenaNastavZaBehuOtocka = true;
+
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.ocr_capture);
 
-        databaseNastavHandler = new DatabaseNastavHandler(this);
+        Nastav.pref = getApplicationContext().getSharedPreferences("Nastavko", 0);
 
-        if (MamOtacet == true) {
+        boolean MamOtacet = Nastav.pref.getBoolean("MamToOtacet", true);
+
+
+        ZmenaNastavZaBehuOtocka = MamOtacet;
+
+        //MobileAds.initialize(this,"ca-app-pub-3940256099942544~3347511713");
+
+        if (ZmenaNastavZaBehuOtocka == true) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            Log.d("JakToFunguje", String.valueOf(MamOtacet));
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+            Log.d("JakToFunguje", String.valueOf(MamOtacet));
         }
+
+
+
 
         //PreviewPole = (EditText) findViewById(R.id.UlohaField)
         SnimaciBut = (FloatingActionButton) findViewById(R.id.CaptureButFloat);
@@ -331,11 +345,13 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         if (isOnline() == true) {
             MuzuResit = true;
-            CtiZdatabaze();
+            //CtiZdatabaze();
         }  else  {
             MuzuResit = false;
             Toast.makeText(this, "Internetové připojení nebylo nalezeno. Připojte se prosím k internetu a restartujte aplikaci.", Toast.LENGTH_LONG).show();
         }
+
+        CtiZdatabaze();
 
     }
 
@@ -360,8 +376,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static void CtiZdatabaze() {
 
         final DatabaseReference HlavniDatabaze = FirebaseDatabase.getInstance().getReference();
-
         final ArrayList<String> local = new ArrayList<String>();
+
 
         HlavniDatabaze.addValueEventListener(new ValueEventListener() {
             @Override
@@ -385,6 +401,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private static int countWords(String str){
 
@@ -415,7 +433,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     public static void RozdelNaSlova(String ToCoChciRozdelit) {
 
-        if (MuzuResit == true) {
+       // if (MuzuResit == true) {
 
             ArrayList<Double> podobnList = new ArrayList<Double>();
 
@@ -446,10 +464,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
                 NajdiVysledek(indexik);
             }
-        } else {
+       /* } else {
             Intent Zamer2 = new Intent(mContext, MocNasToMrzi.class);
             mContext.startActivity(Zamer2);
-        }
+        }*/
 
 
 

@@ -41,6 +41,8 @@ public class UpravaZadaniActivity extends AppCompatActivity {
     DatabaseHandler databaseHandler;
     char[] abeceda = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
     public ImageButton infotlac ;
+    public static boolean HistoriePodleNastaveni = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,9 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         databaseHandler = new DatabaseHandler(this);
         OcrCaptureActivity.mContext = this;
 
+        Nastav.pref = getApplicationContext().getSharedPreferences("Nastavko", 0);
+        final boolean MamHistorii = Nastav.pref.getBoolean("MamZapisovatDoHistorie", true);
+        HistoriePodleNastaveni = MamHistorii;
 
         PoleProUlohu = (EditText) findViewById(R.id.PoleProUpravu);
         Button ButtonPridat = findViewById(R.id.ReseniBut);
@@ -86,10 +91,14 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (NaskanovanaUloha != null && checkString(PoleProUlohu.getText().toString()) == true) {
-                    ZapisDoGarbage(PoleProUlohu.getText().toString());
+                    if (HistoriePodleNastaveni == true) {
+                        ZapisDoGarbage(PoleProUlohu.getText().toString());
+                    }
                 } else if (PoleProUlohu.getText().toString() != null) {
                    if (checkString(PoleProUlohu.getText().toString()) == true) {
-                       ZapisDoGarbage(PoleProUlohu.getText().toString());
+                       if (HistoriePodleNastaveni == true) {
+                           ZapisDoGarbage(PoleProUlohu.getText().toString());
+                       }
                    } else {
                        Log.d("format", "spatny format");
                    }
