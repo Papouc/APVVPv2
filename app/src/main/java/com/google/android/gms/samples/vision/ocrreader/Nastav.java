@@ -3,9 +3,11 @@ package com.google.android.gms.samples.vision.ocrreader;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,7 @@ public class Nastav extends AppCompatActivity {
     public Switch HistorieSwitch;
     public static SharedPreferences pref;
     SharedPreferences.Editor editor;
+    public Button TlacNaWeb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class Nastav extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         RotaceSwitch = (Switch)findViewById(R.id.rotSwitch);
         HistorieSwitch = (Switch)findViewById(R.id.hisSwitch);
+        TlacNaWeb = (Button)findViewById(R.id.WebButton);
         pref = getApplicationContext().getSharedPreferences("Nastavko", 0);
         editor = pref.edit();
 
@@ -37,6 +41,17 @@ public class Nastav extends AppCompatActivity {
 
         RotaceSwitch.setChecked(Otacko);
         HistorieSwitch.setChecked(Historko);
+
+        TlacNaWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentik = new Intent();
+                intentik.setAction(Intent.ACTION_VIEW);
+                intentik.addCategory(Intent.CATEGORY_BROWSABLE);
+                intentik.setData(Uri.parse("http://apvvp.eu"));
+                startActivity(intentik);
+            }
+        });
 
         RotaceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

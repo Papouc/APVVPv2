@@ -29,6 +29,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
@@ -78,7 +79,9 @@ import java.io.IOException;
 import java.security.Policy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -146,6 +149,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static boolean useFlash;
 
     public static ArrayList<String> baf = new ArrayList<String>();
+    public static ArrayList<String> fab = new ArrayList<String>();
     public static int testint = 0;
 
     public static int Poc = 0;
@@ -154,19 +158,46 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static Context mContext;
     public static String TenhleVysledekFaktPlati;
     public boolean MamInternet;
-    public static boolean MuzuResit;
+    public static boolean JednouPerInstance = false;
     public static boolean DoGarbage = false;
     public static boolean ZmenaNastavZaBehuOtocka = true;
-
+    public static DatabaseHelperPrikladky databaseHelperPrikladky;
+    public static boolean NactiZFirebase = true;
+    int bafiktestik = 56;
+    public static ArrayList<String> vysledekyLocal = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.ocr_capture);
 
+
         Nastav.pref = getApplicationContext().getSharedPreferences("Nastavko", 0);
 
         boolean MamOtacet = Nastav.pref.getBoolean("MamToOtacet", true);
+
+        databaseHelperPrikladky = new DatabaseHelperPrikladky(this);
+
+        Cursor cursor = databaseHelperPrikladky.readDat();
+
+        if (cursor.getCount() == 0) {
+
+        } else {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(3) != null) {
+                    bafiktestik = cursor.getInt(3);
+                }
+
+            }
+        }
+
+        if (bafiktestik == 0) {
+            NactiZFirebase = false;
+        } else {
+            NactiZFirebase = true;
+        }
+
+        Log.d("bool", String.valueOf(NactiZFirebase));
 
 
         ZmenaNastavZaBehuOtocka = MamOtacet;
@@ -343,15 +374,34 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         tts = new TextToSpeech(this.getApplicationContext(), listener);
         Log.d("internet",String.valueOf(isOnline()));
 
-        if (isOnline() == true) {
-            MuzuResit = true;
-            //CtiZdatabaze();
-        }  else  {
-            MuzuResit = false;
-            Toast.makeText(this, "Internetové připojení nebylo nalezeno. Připojte se prosím k internetu a restartujte aplikaci.", Toast.LENGTH_LONG).show();
+
+        if (NactiZFirebase == true) {
+            CtiZdatabaze();
+        } else  {
+
+            //JednouPerInstance = true;
+            Cursor cursorek = databaseHelperPrikladky.readDat();
+            //String[] mezikrok = new String[cursor.getCount()];
+
+            if (cursorek.getCount() != 0) { // když v databázi něco je
+                if (cursorek.moveToFirst()) {
+                    //mezikrok = new String[cursor.getCount()];
+                    int i = 0;
+                    do {
+                        if (cursorek.getString(1) != null) {
+                            //mezikrok[i] = cursorek.getString(1);
+                            baf.add(cursorek.getString(1));
+                            i++;
+                        }
+                    } while (cursorek.moveToNext());
+                }
         }
 
-        CtiZdatabaze();
+            /*for (int pocitadelko = 0; pocitadelko <= mezikrok.length - 2; pocitadelko++) {
+               baf.add(mezikrok[pocitadelko]) ;
+            }*/
+            Log.d("bafSize", String.valueOf(baf.size()));
+        }
 
     }
 
@@ -378,7 +428,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         final DatabaseReference HlavniDatabaze = FirebaseDatabase.getInstance().getReference();
         final ArrayList<String> local = new ArrayList<String>();
 
-
         HlavniDatabaze.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -389,6 +438,28 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                     local.add(value);
 
                     Ukradni(local);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        final DatabaseReference VysledkyVsechny = FirebaseDatabase.getInstance().getReference();
+        final ArrayList<String> lokal = new ArrayList<String>();
+        VysledkyVsechny.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    String value = String.valueOf(dataSnapshot1.child("Vysledek").getValue());
+
+                    lokal.add(value);
+
+                    ZapisVysledky(lokal);
                 }
 
             }
@@ -434,10 +505,47 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static void RozdelNaSlova(String ToCoChciRozdelit) {
 
        // if (MuzuResit == true) {
+        if (NactiZFirebase == true) {
+            Date currentTime = Calendar.getInstance().getTime();
+            for (int indexq = 0; indexq <= baf.size() - 1; indexq++) {
+                databaseHelperPrikladky.insertData(baf.get(indexq), String.valueOf(currentTime), fab.get(indexq));
+            }
+            //NactiZFirebase = false;
+
+        }
+
 
             ArrayList<Double> podobnList = new ArrayList<Double>();
 
-            for (int qu = 0; qu <= baf.size() - 1; qu++) {
+            int odecitak = 2;
+
+            if (NactiZFirebase == true) {
+                odecitak = 2;
+            } else {
+                odecitak = 3;
+            }
+
+
+            if (baf.size() >= 0 && baf.size() <= 10) { // pojistka kvuli prubeznemu prepnuti internetu
+                baf.clear();
+                Cursor cursorek = databaseHelperPrikladky.readDat();
+                if (cursorek.getCount() != 0) { // když v databázi něco je
+                    if (cursorek.moveToFirst()) {
+                        //mezikrok = new String[cursor.getCount()];
+                        int i = 0;
+                        do {
+                            if (cursorek.getString(1) != null) {
+                                //mezikrok[i] = cursorek.getString(1);
+                                baf.add(cursorek.getString(1));
+                                i++;
+                            }
+                        } while (cursorek.moveToNext());
+                    }
+                }
+            }
+        Log.d("JsemTu", String.valueOf(baf.size()));
+
+            for (int qu = 0; qu <= baf.size() - odecitak; qu++) {
                 podobnList.add(cosineSimilarity(baf.get(qu), ToCoChciRozdelit));
             }
 
@@ -461,7 +569,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
+                podobnList.clear();
                 NajdiVysledek(indexik);
             }
        /* } else {
@@ -475,39 +583,75 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
    public static void NajdiVysledek(int Indexicek) {
 
+
+
         int id = Indexicek;
-       DatabaseReference VysledekDatabaze;
-       VysledekDatabaze = FirebaseDatabase.getInstance().getReference().child(String.valueOf(id));
 
-       VysledekDatabaze.child("Vysledek").addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               String TenVysledek = String.valueOf(dataSnapshot.getValue());
-               Log.d("VasVysledek", "Vas vysledek je : " + TenVysledek);
-               Finale(TenVysledek);
-           }
+        if (NactiZFirebase == true) {
+            DatabaseReference VysledekDatabaze;
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
+            VysledekDatabaze = FirebaseDatabase.getInstance().getReference().child(String.valueOf(id));
 
-           }
-       });
+            VysledekDatabaze.child("Vysledek").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String TenVysledek = String.valueOf(dataSnapshot.getValue());
+                    Log.d("VasVysledek", "Vas vysledek je : " + TenVysledek);
+                    Finale(TenVysledek);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
 
 
+        } else {
 
+            Cursor cursorik = databaseHelperPrikladky.readDat();
+            //ArrayList<String> vysledekyLocal = new ArrayList<String>();
+            //Vysledek z lokalni databaze
+
+            if (cursorik.getCount() != 0) { // když v databázi něco je
+                if (cursorik.moveToFirst()) {
+                    //mezikrok = new String[cursor.getCount()];
+                    int i = 0;
+                    do {
+                        vysledekyLocal.add(cursorik.getString(4));
+                        i++;
+                    } while (cursorik.moveToNext());
+                }
+            }
+            Log.d("sizze", String.valueOf(vysledekyLocal.size()));
+
+            Finale(vysledekyLocal.get(id));
+
+
+        }
 
 
     }
 
+
+
     public static void Finale(String UzKonecneVysledek) {
+
+        NactiZFirebase = false;
+        databaseHelperPrikladky.insertDataOnce(0); // do databaze si zapise NactiZFirebase = false
         TenhleVysledekFaktPlati = UzKonecneVysledek;
+        baf.clear();
+        vysledekyLocal.clear();
         Intent Zamer = new Intent(mContext, ShowVysledek.class);
         //Zamer.putExtra("Vysledecek", UzKonecneVysledek);
         mContext.startActivity(Zamer);
 
     }
 
+    public static void ZapisVysledky(ArrayList<String> Prepisovac) {
+        fab = Prepisovac;
+    }
 
 
     public static Map<String, Integer> getTermFrequencyMap(String[] terms) {
