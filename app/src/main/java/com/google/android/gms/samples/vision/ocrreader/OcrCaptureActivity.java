@@ -77,6 +77,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.security.Policy;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -164,7 +167,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static DatabaseHelperPrikladky databaseHelperPrikladky;
     public static boolean NactiZFirebase = true;
     int bafiktestik = 56;
+    int bafSpoustec = 65;
     public static ArrayList<String> vysledekyLocal = new ArrayList<String>();
+    public String DatumZDatabaze;
+    public static boolean tohleJeUplnePrvniSpusteni = true;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -187,6 +193,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 if (cursor.getString(3) != null) {
                     bafiktestik = cursor.getInt(3);
                 }
+                if (cursor.getString(5) != null) {
+                    bafSpoustec = cursor.getInt(5);
+                }
 
             }
         }
@@ -197,9 +206,47 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             NactiZFirebase = true;
         }
 
-        Log.d("bool", String.valueOf(NactiZFirebase));
+        if (bafSpoustec == 0) {
+            tohleJeUplnePrvniSpusteni = false;
+        } else {
+            tohleJeUplnePrvniSpusteni = true;
+        }
 
 
+
+
+        if (tohleJeUplnePrvniSpusteni != true) {
+            // porovnat datub z databaze s dnesnim
+            Cursor cursorikcekD = databaseHelperPrikladky.readDat();
+            Date dneskaJe = new Date();
+            long MilisekundyDneska = dneskaJe.getTime();
+
+            if (cursorikcekD.getCount() == 0) {
+
+            } else {
+                while (cursorikcekD.moveToNext()) {
+                    if (cursorikcekD.getString(2) != null) {
+                        DatumZDatabaze = cursorikcekD.getString(2);
+                    }
+                }
+            }
+
+          long MilisekundyDatabaze = Long.valueOf(DatumZDatabaze).longValue();
+
+
+
+            if (MilisekundyDneska - 600000 >= MilisekundyDatabaze) { // tyden je 604800000
+                Log.d("Rozdil", "Obnova databaze");
+                databaseHelperPrikladky.ClearDatabase();
+                NactiZFirebase = true;
+            }
+
+
+
+
+            // konec cteni a porovnavani casu
+
+        }
         ZmenaNastavZaBehuOtocka = MamOtacet;
 
         //MobileAds.initialize(this,"ca-app-pub-3940256099942544~3347511713");
@@ -506,9 +553,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
        // if (MuzuResit == true) {
         if (NactiZFirebase == true) {
-            Date currentTime = Calendar.getInstance().getTime();
+            Date currentTime = new Date();
+            long casik = currentTime.getTime();
             for (int indexq = 0; indexq <= baf.size() - 1; indexq++) {
-                databaseHelperPrikladky.insertData(baf.get(indexq), String.valueOf(currentTime), fab.get(indexq));
+                databaseHelperPrikladky.insertData(baf.get(indexq), String.valueOf(casik), fab.get(indexq));
             }
             //NactiZFirebase = false;
 
@@ -639,10 +687,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static void Finale(String UzKonecneVysledek) {
 
         NactiZFirebase = false;
-        databaseHelperPrikladky.insertDataOnce(0); // do databaze si zapise NactiZFirebase = false
+        databaseHelperPrikladky.insertDataOnce(0,"Nacteni"); // do databaze si zapise NactiZFirebase = false
         TenhleVysledekFaktPlati = UzKonecneVysledek;
         baf.clear();
         vysledekyLocal.clear();
+        databaseHelperPrikladky.insertDataOnce(0, "Spusteni");
+        tohleJeUplnePrvniSpusteni = false;
         Intent Zamer = new Intent(mContext, ShowVysledek.class);
         //Zamer.putExtra("Vysledecek", UzKonecneVysledek);
         mContext.startActivity(Zamer);

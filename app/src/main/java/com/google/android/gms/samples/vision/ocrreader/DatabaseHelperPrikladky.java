@@ -21,6 +21,7 @@ public class DatabaseHelperPrikladky extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_BOOL = "Nacteni";
     private static final String COLUMN_VYSLEDEK = "Vysledek";
+    private static final String COLUMN_PRVNISPUSTENI = "Spusteni";
 
     public DatabaseHelperPrikladky(@Nullable Context context) {
         super(context, "PrikladkyDatabaze.db", null, 1);
@@ -28,7 +29,7 @@ public class DatabaseHelperPrikladky extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" (" +COLUMN_ID+ " INTEGER PRIMARY KEY, " +COLUMN_POLOZKA+" TEXT, "+COLUMN_CAS+" TEXT, "+COLUMN_BOOL+" TEXT, "+COLUMN_VYSLEDEK+" TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+" (" +COLUMN_ID+ " INTEGER PRIMARY KEY, " +COLUMN_POLOZKA+" TEXT, "+COLUMN_CAS+" TEXT, "+COLUMN_BOOL+" TEXT, "+COLUMN_VYSLEDEK+" TEXT, "+COLUMN_PRVNISPUSTENI+" TEXT)");
     }
 
     @Override
@@ -50,16 +51,21 @@ public class DatabaseHelperPrikladky extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean insertDataOnce(int AnoNe) {
+    public boolean insertDataOnce(int AnoNe, String sloupecek) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_BOOL, AnoNe);
+        contentValues.put(sloupecek, AnoNe);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if (result == -1)
             return false;
         else
             return true;
     }
+
+   public void ClearDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from Ulohy where 1=1");
+   }
 
 
 
