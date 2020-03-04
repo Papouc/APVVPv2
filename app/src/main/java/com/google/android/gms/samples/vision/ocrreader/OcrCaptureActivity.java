@@ -169,8 +169,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     int bafiktestik = 56;
     int bafSpoustec = 65;
     public static ArrayList<String> vysledekyLocal = new ArrayList<String>();
-    public String DatumZDatabaze;
+    public int VerzeZDatabaze;
     public static boolean tohleJeUplnePrvniSpusteni = true;
+    public static int NejnovejsiVerze = 0;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -218,20 +219,56 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         if (tohleJeUplnePrvniSpusteni != true) {
             // porovnat datub z databaze s dnesnim
             Cursor cursorikcekD = databaseHelperPrikladky.readDat();
-            Date dneskaJe = new Date();
-            long MilisekundyDneska = dneskaJe.getTime();
+            //Date dneskaJe = new Date();
+            //long MilisekundyDneska = dneskaJe.getTime();
 
             if (cursorikcekD.getCount() == 0) {
 
             } else {
                 while (cursorikcekD.moveToNext()) {
                     if (cursorikcekD.getString(2) != null) {
-                        DatumZDatabaze = cursorikcekD.getString(2);
+                        VerzeZDatabaze = cursorikcekD.getInt(2);
                     }
                 }
             }
+            Log.d("update", "Verze, kterou mam je : " + VerzeZDatabaze);
 
-          long MilisekundyDatabaze = Long.valueOf(DatumZDatabaze).longValue();
+          NejnovejsiVerze = VerzeZDatabaze;
+
+
+
+            DatabaseReference myRef = FirebaseDatabase.getInstance("https://apvvp-verzicka.firebaseio.com/").getReference().child("Verzicicka");
+
+            // Read from the database
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    //String value = String.valueOf(dataSnapshot.getValue());
+
+                    int value = dataSnapshot.getValue(int.class);
+                    if (value != NejnovejsiVerze) {
+                        Log.d("update", "budu updatovat");
+                        NactiZFirebase = true;
+                        ZapisVerzi(value);
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("hodnota", "Failed to read value.", error.toException());
+                    NactiZFirebase = false;
+                }
+            });
+
+
+
+
+          /*long MilisekundyDatabaze = Long.valueOf(DatumZDatabaze).longValue();
 
 
 
@@ -239,7 +276,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 Log.d("Rozdil", "Obnova databaze");
                 databaseHelperPrikladky.ClearDatabase();
                 NactiZFirebase = true;
-            }
+            }*/
+
+
 
 
 
@@ -457,8 +496,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * showing a "Snackbar" message of why the permission is needed then
      * sending the request.
      */
-
-
+    public void ZapisVerzi(int zFirebase) {
+        Log.d("hodnotaPriZapisu", "Value is: " + String.valueOf(zFirebase));
+        NejnovejsiVerze = zFirebase;
+        databaseHelperPrikladky.ClearDatabase();
+        CtiZdatabaze();
+    }
 
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -553,10 +596,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
        // if (MuzuResit == true) {
         if (NactiZFirebase == true) {
-            Date currentTime = new Date();
-            long casik = currentTime.getTime();
+           Log.d("update", "probiha update");
             for (int indexq = 0; indexq <= baf.size() - 1; indexq++) {
-                databaseHelperPrikladky.insertData(baf.get(indexq), String.valueOf(casik), fab.get(indexq));
+                databaseHelperPrikladky.insertData(baf.get(indexq), String.valueOf(NejnovejsiVerze), fab.get(indexq));
             }
             //NactiZFirebase = false;
 

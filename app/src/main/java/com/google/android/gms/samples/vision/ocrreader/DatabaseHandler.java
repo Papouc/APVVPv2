@@ -61,6 +61,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return true;
     }
 
+    public void ClearDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from HistoryRecords where 1=1");
+    }
+
 
     public Cursor readDat() {
         SQLiteDatabase db = this.getWritableDatabase();
