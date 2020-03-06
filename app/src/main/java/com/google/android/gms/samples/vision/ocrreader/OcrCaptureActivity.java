@@ -90,6 +90,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import android.os.Handler;
 
@@ -139,8 +140,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static  FloatingActionButton ZoomButPlus;
     public static  FloatingActionButton ZoomButMinus;
     public static ConstraintLayout CaptureLayout;
-
-    private DatabaseReference mainDatabase;
     public static DatabaseReference garbageDatabase;
 
 
@@ -644,12 +643,17 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
             if (Max < 0.7) {
                 Log.d("bohuzel", "toto nejde vyresit"); // stranka strasne nas to mrzi, work in progress
-                DoGarbage = true;
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                String currentDateandTime = sdf.format(new Date());
+                Random rand = new Random();
+                int nahodID = rand.nextInt(32000);
+                DatabaseReference GGarbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(currentDateandTime + " id: " + String.valueOf(nahodID) + " ");
+                GGarbageDatabase.setValue(ToCoChciRozdelit);
                 Intent ZamerMrziNasTo = new Intent(mContext, MocNasToMrzi.class);
                 mContext.startActivity(ZamerMrziNasTo);
             } else {
                 Log.d("skvele", "toto jde vyresit"); // jdeme na to
-                DoGarbage = false;
+
                 int indexik = 0;
 
                 for (int psat = 0; psat <= podobnList.size() - 1; psat++) {
@@ -660,6 +664,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                     }
                 }
                 podobnList.clear();
+
+
+
+
                 NajdiVysledek(indexik);
             }
        /* } else {

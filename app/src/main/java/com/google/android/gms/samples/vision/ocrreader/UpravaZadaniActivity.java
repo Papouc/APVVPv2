@@ -149,6 +149,8 @@ public class UpravaZadaniActivity extends AppCompatActivity {
         return false;
     }
 
+
+
     public void ZapisDoGarbage(String TaUloha) {
 
         Date currentTime = Calendar.getInstance().getTime();
@@ -160,10 +162,10 @@ public class UpravaZadaniActivity extends AppCompatActivity {
             //Toast.makeText(UpravaZadaniActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
         Log.d("Data", "Data not inserted");
 
-        if (OcrCaptureActivity.DoGarbage == true) {
+       /* if (OcrCaptureActivity.DoGarbage == true) {
             OcrCaptureActivity.garbageDatabase = FirebaseDatabase.getInstance("https://apvvp-garbage.firebaseio.com/").getReference(String.valueOf(random));
             OcrCaptureActivity.garbageDatabase.setValue(TaUloha);
-        }
+        }*/
 
     }
 
