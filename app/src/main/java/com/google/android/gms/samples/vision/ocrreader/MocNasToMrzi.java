@@ -17,6 +17,7 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -47,6 +48,8 @@ public class MocNasToMrzi extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        TextView t2 = (TextView) findViewById(R.id.LinkView);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
 
         /*refresh = findViewById(R.id.btn_refresh);
         startVideoAdsMuted = findViewById(R.id.cb_start_muted);

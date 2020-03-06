@@ -20,4 +20,5 @@
     <string name="ad_unit_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="preference_file_key">APVVPulozenaNastaveni</string>
     <bool name="DefBool">true</bool>
+    <string name="txtCredits"><a href="https://apvvp.eu/databaze-prikladu.php">Pokud chcete nám chcete vaši úlohu zaslat, prosím použijte formulář, který naleznete zde. Děkujeme :-) </a></string>
 </resources>

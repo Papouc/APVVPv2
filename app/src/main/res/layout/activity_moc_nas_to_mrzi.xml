@@ -75,5 +75,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/LinkView"
+        android:layout_width="330dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="277dp"
+        android:layout_marginEnd="15dp"
+        android:text="@string/txtCredits"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ToolBarik" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
