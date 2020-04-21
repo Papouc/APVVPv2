@@ -3,6 +3,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.util.Log;
+
 /**
  * ColorBall class used to store points of the screen.
  *
@@ -15,6 +17,8 @@ public class ColorBall {
     Point point;
     int id;
     static int count = 0;
+    public static int pozička = 0;
+
 
     public ColorBall(Context context, int resourceId, Point point) {
         this.id = count++;

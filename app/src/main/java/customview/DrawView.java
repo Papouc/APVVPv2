@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -33,6 +34,7 @@ public class DrawView extends View {
     // variable to know what ball is being dragged
     Paint paint;
     Canvas canvas;
+
 
     public DrawView(Context context) {
         super(context);
@@ -61,6 +63,8 @@ public class DrawView extends View {
         colorballs.add(new ColorBall(context, R.drawable.roh, point2));
         colorballs.add(new ColorBall(context, R.drawable.roh, point3));
         colorballs.add(new ColorBall(context, R.drawable.roh, point4));
+
+
 
     }
 
@@ -137,6 +141,15 @@ public class DrawView extends View {
 
         int X = (int) event.getX();
         int Y = (int) event.getY();
+
+        Log.d("bod1", "------------------------------------------");
+        Log.d("bod1", "(LevHor) X : " + String.valueOf(point3.x) + " Y : " + String.valueOf(point3.y));
+        Log.d("bod1", "(PravHor) X : " + String.valueOf(point2.x) + " Y : " + String.valueOf(point2.y));
+        Log.d("bod1", "(LevDol) X : " + String.valueOf(point4.x) + " Y : " + String.valueOf(point4.y));
+        Log.d("bod1", "(PravDol) X : " + String.valueOf(point1.x) + " Y : " + String.valueOf(point1.y));
+        Log.d("bod1", "delkaX : " + String.valueOf(point2.x - point3.x) + " delkaY : " + String.valueOf(point4.y - point3.y));
+
+
 
         switch (eventaction) {
 

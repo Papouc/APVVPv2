@@ -30,6 +30,9 @@ import android.view.View;
 
 import java.sql.Time;
 
+import customview.ColorBall;
+import customview.DrawView;
+
 /**
  * A very simple Processor which gets detected TextBlocks and adds them to the overlay
  * as OcrGraphics.
@@ -52,6 +55,7 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
 
 
+
     /**
      * Called by the detector to deliver detection results.
      * If your application called for it, this could be a place to check for
@@ -66,6 +70,7 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
     @Override
     public void receiveDetections(Detector.Detections<TextBlock> detections) {
        // EditText simpleEditText = (EditText) findViewById(R.id.UlohaField);
+
         graphicOverlay.clear();
         SparseArray<TextBlock> items = detections.getDetectedItems();
         if (ZaberText == true) {
