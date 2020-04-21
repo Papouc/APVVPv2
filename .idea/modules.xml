@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/APVVPv2.iml" filepath="$PROJECT_DIR$/APVVPv2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/APVVP2.iml" filepath="$PROJECT_DIR$/APVVP2.iml" group="APVVP2" />
+      <module fileurl="file://$PROJECT_DIR$/NativeTemplatesAndroid-1.0.0/NativeTemplatesAndroid-1.0.0.iml" filepath="$PROJECT_DIR$/NativeTemplatesAndroid-1.0.0/NativeTemplatesAndroid-1.0.0.iml" group="APVVP2/NativeTemplatesAndroid-1.0.0" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="APVVP2/app" />
+      <module fileurl="file://$PROJECT_DIR$/nativetemplates/nativetemplates.iml" filepath="$PROJECT_DIR$/nativetemplates/nativetemplates.iml" group="APVVP2/nativetemplates" />
     </modules>
   </component>
 </project>

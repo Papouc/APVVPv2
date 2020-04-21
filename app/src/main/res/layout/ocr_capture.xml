@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/camera" />
+        app:srcCompat="@drawable/kamerka" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ZoomPlusBut"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/plus" />
+        app:srcCompat="@drawable/plusicek" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ZoomMinusBut"
@@ -102,6 +102,15 @@
 
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/minus" />
+
+    <customview.DrawView
+        android:id="@+id/drawView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="-50dp"
+        android:layout_marginTop="54dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
