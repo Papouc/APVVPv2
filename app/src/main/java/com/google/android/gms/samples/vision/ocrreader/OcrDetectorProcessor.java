@@ -15,6 +15,7 @@
  */
 package com.google.android.gms.samples.vision.ocrreader;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 import android.widget.EditText;
@@ -64,12 +65,18 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
      * multiple detections.
      */
 
-
-
+    double MaxHod1 = 0;
+    double MaxHod2 = 0;
 
     @Override
     public void receiveDetections(Detector.Detections<TextBlock> detections) {
        // EditText simpleEditText = (EditText) findViewById(R.id.UlohaField);
+       MaxHod1 = OcrCaptureActivity.width * 1.115; // rozsah Fňjů
+       MaxHod2 = OcrCaptureActivity.width * 0.655; // rozsah Bžjů
+
+        //float outgoing = (float) (0 + (MaxHod2 - 0) * ((1100 - 0) / (MaxHod1 - 0)));
+        Log.d("uprava", String.valueOf(Prepocitej(DrawView.MujLevHorBody[0])));
+
 
 
         graphicOverlay.clear();
@@ -81,7 +88,10 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                     Log.d("OcrDetectorProcessor", "Text detected! " + item.getValue());
                     OcrGraphic graphic = new OcrGraphic(graphicOverlay, item);
                     graphicOverlay.add(graphic);
-                    GlobalUlohaText += item.getValue();
+                    if (Prepocitej(DrawView.MujLevHorBody[0]) < OcrGraphic.Zleva && Prepocitej(DrawView.MujPravHorBody[0]) > OcrGraphic.Zprava && Prepocitej(DrawView.MujLevHorBody[1]) < OcrGraphic.Zhora && Prepocitej(DrawView.MujLevDolBody[1]) > OcrGraphic.Zdola)
+                    {
+                        GlobalUlohaText += item.getValue();
+                    }
                     //OcrCaptureActivity.PreviewPole.setText(GlobalUlohaText);
                 }
 
@@ -91,6 +101,10 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
 
 
+    }
+
+    float Prepocitej(int vstup) {
+        return  (float) (0 + (MaxHod2 - 0) * ((vstup - 0) / (MaxHod1 - 0)));
     }
 
     /**

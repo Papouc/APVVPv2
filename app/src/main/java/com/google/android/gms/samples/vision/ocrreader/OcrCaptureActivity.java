@@ -143,9 +143,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static DatabaseReference garbageDatabase;
 
 
-    int height;
-    int width;
-    int realHeight;
+   public static int height;
+   public static int width;
+   int realHeight;
 
     public static boolean autoFocus;
     public static boolean useFlash;
