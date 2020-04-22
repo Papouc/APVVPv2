@@ -19,6 +19,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.google.android.gms.samples.vision.ocrreader.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.text.Text;
@@ -39,6 +41,11 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
     private static Paint rectPaint;
     private static Paint textPaint;
     private final TextBlock textBlock;
+
+    public static float Zleva = 0f;
+    public static float Zprava = 0f;
+    public static float Zdola = 0f;
+    public static float Zhora = 0f;
 
     OcrGraphic(GraphicOverlay overlay, TextBlock text) {
         super(overlay);
@@ -98,8 +105,18 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
             return;
         }
 
+
+
+
+
         // Draws the bounding box around the TextBlock.
         RectF rect = new RectF(textBlock.getBoundingBox());
+        //Log.d("www", String.valueOf(rect.left));
+        Zleva = rect.left;
+        Zprava = rect.right;
+        Zdola = rect.bottom;
+        Zhora = rect.top;
+        Log.d("margin", "L : " + rect.left + " P : " + rect.right + " H : " + rect.top + " D : " + rect.bottom);
         rect = translateRect(rect);
         canvas.drawRect(rect, rectPaint);
 

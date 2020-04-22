@@ -1,5 +1,7 @@
 package customview;
 import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -35,6 +37,14 @@ public class DrawView extends View {
     Paint paint;
     Canvas canvas;
 
+    public static int delkaX = 0;
+    public static  int delkaY = 0;
+    public static int[] MujLevHorBody = {150,20};
+    public static int[] MujPravHorBody = {400, 20};
+    public static int[] MujLevDolBody = {150, 320};
+    public static int[] MujPravDolBody = {400, 320};
+    public static int temp1;
+    public static int temp2;
 
     public DrawView(Context context) {
         super(context);
@@ -43,20 +53,20 @@ public class DrawView extends View {
         canvas = new Canvas();
         // setting the start point for the balls
         point1 = new Point();
-        point1.x = 50;
+        point1.x = 150;
         point1.y = 20;
 
         point2 = new Point();
-        point2.x = 150;
+        point2.x = 400;
         point2.y = 20;
 
         point3 = new Point();
-        point3.x = 150;
-        point3.y = 120;
+        point3.x = 400;
+        point3.y = 320;
 
         point4 = new Point();
-        point4.x = 50;
-        point4.y = 120;
+        point4.x = 150;
+        point4.y = 320;
 
         // declare each ball with the ColorBall class
         colorballs.add(new ColorBall(context, R.drawable.roh, point1));
@@ -79,20 +89,20 @@ public class DrawView extends View {
         canvas = new Canvas();
         // setting the start point for the balls
         point1 = new Point();
-        point1.x = 50;
-        point1.y = 20;
+        point1.x = 150; // 150
+        point1.y = 20;  // 20
 
         point2 = new Point();
-        point2.x = 150;
-        point2.y = 20;
+        point2.x = 400; //400
+        point2.y = 20; //20
 
         point3 = new Point();
-        point3.x = 150;
-        point3.y = 120;
+        point3.x = 400; //400
+        point3.y = 320; //320
 
         point4 = new Point();
-        point4.x = 50;
-        point4.y = 120;
+        point4.x = 150; //150
+        point4.y = 320; //320
 
         // declare each ball with the ColorBall class
         colorballs.add(new ColorBall(context, R.drawable.roh, point1));
@@ -142,14 +152,129 @@ public class DrawView extends View {
         int X = (int) event.getX();
         int Y = (int) event.getY();
 
-        Log.d("bod1", "------------------------------------------");
-        Log.d("bod1", "(LevHor) X : " + String.valueOf(point3.x) + " Y : " + String.valueOf(point3.y));
+
+
+
+        /*Log.d("bod1", "------------------------------------------");
+        Log.d("bod1", "(LevHor) X : " + String.valueOf(point1.x) + " Y : " + String.valueOf(point1.y));
         Log.d("bod1", "(PravHor) X : " + String.valueOf(point2.x) + " Y : " + String.valueOf(point2.y));
         Log.d("bod1", "(LevDol) X : " + String.valueOf(point4.x) + " Y : " + String.valueOf(point4.y));
-        Log.d("bod1", "(PravDol) X : " + String.valueOf(point1.x) + " Y : " + String.valueOf(point1.y));
-        Log.d("bod1", "delkaX : " + String.valueOf(point2.x - point3.x) + " delkaY : " + String.valueOf(point4.y - point3.y));
+        Log.d("bod1", "(PravDol) X : " + String.valueOf(point3.x) + " Y : " + String.valueOf(point3.y));
+        Log.d("bod1", "delkaX : " + String.valueOf(point2.x - point3.x) + " delkaY : " + String.valueOf(point4.y - point3.y));*/
+
+        int [] HodnotyX = {point1.x, point2.x, point3.x, point4.x};
+        int [] HodnotyY = {point1.y, point2.y, point3.y, point4.y};
 
 
+        for (int i = 0; i < HodnotyX.length; i++) {
+            for (int j = i + 1; j < HodnotyX.length; j++) {
+                if (HodnotyX[i] > HodnotyX[j]) {
+                    temp1 = HodnotyX[i];
+                    HodnotyX[i] = HodnotyX[j];
+                    HodnotyX[j] = temp1;
+                }
+            }
+        }
+        for (int i = 0; i < HodnotyY.length; i++) {
+            for (int j = i + 1; j < HodnotyY.length; j++) {
+                if (HodnotyY[i] > HodnotyY[j]) {
+                    temp2 = HodnotyY[i];
+                    HodnotyY[i] = HodnotyY[j];
+                    HodnotyY[j] = temp2;
+                }
+            }
+        }
+
+        if (point1.x == point2.x) {
+          if (point1.y > point2.y) {
+              delkaY = point1.y - point2.y;
+          }  else {
+              delkaY = point2.y - point1.y;
+          }
+        }  else if (point1.x == point3.x) {
+            if (point1.y > point3.y) {
+                delkaY = point1.y - point3.y;
+            } else {
+                delkaY = point3.y - point1.y;
+            }
+        } else if (point1.x == point4.x) {
+            if (point1.y > point4.y) {
+                delkaY = point1.y - point4.y;
+            } else {
+                delkaY = point4.y - point1.y;
+            }
+        } else if (point2.x == point3.x) {
+            if (point2.y > point3.y) {
+                delkaY = point2.y - point3.y;
+            } else {
+                delkaY = point3.y - point2.y;
+            }
+        } else if (point2.x == point4.x) {
+            if (point2.y > point4.y) {
+                delkaY = point2.y - point4.y;
+            } else {
+                delkaY = point4.y - point2.y;
+            }
+        } else if (point3.x == point4.x) {
+            if (point3.y > point4.y) {
+                delkaY = point3.y - point4.y;
+            } else {
+                delkaY = point4.y - point3.y;
+            }
+        }
+        if (point1.y == point2.y) {
+                if (point1.x > point2.x) {
+                    delkaX = point1.x - point2.x;
+                } else {
+                    delkaX = point2.x - point1.x;
+                }
+            } else if (point1.y == point3.y) {
+                if (point1.x > point3.x) {
+                    delkaX = point1.x - point3.x;
+                } else {
+                    delkaX = point3.x -point1.x;
+                }
+            } else if (point2.y == point3.y) {
+                if (point2.x > point3.x) {
+                    delkaX = point2.x - point3.x;
+                } else {
+                    delkaX = point3.x - point2.x;
+                }
+            } else if (point2.y == point4.y) {
+                if (point2.x > point4.x) {
+                    delkaX = point2.x - point4.x;
+                } else {
+                    delkaX = point4.x - point2.x;
+                }
+            } else if (point3.y == point4.y) {
+                if (point3.x > point4.x) {
+                    delkaX = point3.x - point4.x;
+                } else {
+                    delkaX = point4.x - point3.x;
+                }
+            }
+
+        MujLevHorBody[0] = HodnotyX[0];
+        MujLevHorBody[1] = HodnotyY[0];
+
+        MujPravHorBody[0] = MujLevHorBody[0] + delkaX;
+        MujPravHorBody[1] = MujLevHorBody[1];
+        MujLevDolBody[0] = MujLevHorBody[0];
+        MujLevDolBody[1] = MujLevHorBody[1] + delkaY;
+        MujPravDolBody[0] = MujLevHorBody[0] + delkaX;
+        MujPravDolBody[1] = MujLevHorBody[1] + delkaY;
+
+        Log.d ("bod1", "--------------------------");
+        Log.d ("bod1", "LevHorX : " + String.valueOf(MujLevHorBody[0] ) + " LevHorY : " + String.valueOf(MujLevHorBody[1]));
+        Log.d ("bod1", "LevDolX : " + String.valueOf(MujLevDolBody[0] ) + " LevDolY : " + String.valueOf(MujLevDolBody[1]));
+        Log.d ("bod1", "PravHorX : " + String.valueOf(MujPravHorBody[0] ) + " PravHorY : " + String.valueOf(MujPravHorBody[1]));
+        Log.d ("bod1", "PravDolX : " + String.valueOf(MujPravDolBody[0] ) + " PravDilY : " + String.valueOf(MujPravDolBody[1]));
+        Log.d("bod1", "Y : " + String.valueOf(delkaY));
+        Log.d("bod1","X : " + String.valueOf(delkaX));
+
+
+        float dpi = this.getResources().getDisplayMetrics().density;
+        Log.d("velikost", String.valueOf(dpi));
 
         switch (eventaction) {
 

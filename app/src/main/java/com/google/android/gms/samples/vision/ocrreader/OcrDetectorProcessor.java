@@ -71,6 +71,7 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
     public void receiveDetections(Detector.Detections<TextBlock> detections) {
        // EditText simpleEditText = (EditText) findViewById(R.id.UlohaField);
 
+
         graphicOverlay.clear();
         SparseArray<TextBlock> items = detections.getDetectedItems();
         if (ZaberText == true) {

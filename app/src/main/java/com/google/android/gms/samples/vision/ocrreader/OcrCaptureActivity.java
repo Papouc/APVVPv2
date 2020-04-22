@@ -178,6 +178,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         setContentView(R.layout.ocr_capture);
 
 
+
         Nastav.pref = getApplicationContext().getSharedPreferences("Nastavko", 0);
 
         boolean MamOtacet = Nastav.pref.getBoolean("MamToOtacet", true);
