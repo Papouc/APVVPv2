@@ -26,7 +26,10 @@ import com.google.android.gms.samples.vision.ocrreader.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import customview.DrawView;
 
 /**
  * Graphic instance for rendering TextBlock position, size, and ID within an associated graphic
@@ -46,6 +49,8 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
     public static float Zprava = 0f;
     public static float Zdola = 0f;
     public static float Zhora = 0f;
+    public static ArrayList<RectF> ctverce = new ArrayList<RectF>();
+
 
     OcrGraphic(GraphicOverlay overlay, TextBlock text) {
         super(overlay);
@@ -112,10 +117,14 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
         // Draws the bounding box around the TextBlock.
         RectF rect = new RectF(textBlock.getBoundingBox());
         //Log.d("www", String.valueOf(rect.left));
-        Zleva = rect.left;
+        /*Zleva = rect.left;
         Zprava = rect.right;
         Zdola = rect.bottom;
-        Zhora = rect.top;
+        Zhora = rect.top;*/
+
+        if (!ctverce.contains(rect)) {ctverce.add(rect);}
+
+
         Log.d("margin", "L : " + rect.left + " P : " + rect.right + " H : " + rect.top + " D : " + rect.bottom);
         rect = translateRect(rect);
         canvas.drawRect(rect, rectPaint);

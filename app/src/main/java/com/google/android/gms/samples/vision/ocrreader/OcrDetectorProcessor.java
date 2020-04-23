@@ -15,6 +15,7 @@
  */
 package com.google.android.gms.samples.vision.ocrreader;
 
+import android.graphics.RectF;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
@@ -30,6 +31,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import customview.ColorBall;
 import customview.DrawView;
@@ -48,7 +51,9 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
 
     public  static  boolean ZaberText = false;
-
+    public ArrayList<Float> srovnano = new ArrayList<Float>();
+    public ArrayList<Integer> srovnanoPodruhe = new ArrayList<Integer>();
+    public RectF NasCtverecicek;
 
     OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay) {
         graphicOverlay = ocrGraphicOverlay;
@@ -75,7 +80,45 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
        MaxHod2 = OcrCaptureActivity.width * 0.655; // rozsah Bžjů
 
         //float outgoing = (float) (0 + (MaxHod2 - 0) * ((1100 - 0) / (MaxHod1 - 0)));
-        Log.d("uprava", String.valueOf(Prepocitej(DrawView.MujLevHorBody[0])));
+
+       Log.d("wert", String.valueOf(OcrGraphic.ctverce));
+
+       if (OcrGraphic.ctverce.size() > 0) {
+
+           //Log.d("wert", String.valueOf(OcrGraphic.ctverce.get(0).left) + " " + String.valueOf(OcrGraphic.ctverce.get(0).right) + " " + String.valueOf(OcrGraphic.ctverce.get(0).top));
+           for (int qw = 0; qw <= OcrGraphic.ctverce.size(); qw++) {
+             if (srovnano.size() < OcrGraphic.ctverce.size() ) {
+                 srovnano.add(OcrGraphic.ctverce.get(qw).left - DrawView.MujLevHorBody[0]);
+             }
+           }
+           Log.d("srovnano", "neusporadano : " + String.valueOf(srovnano));
+           for (int bz = 0; bz <= srovnano.size(); bz ++) {
+               if (srovnanoPodruhe.size() < OcrGraphic.ctverce.size()) {
+                   int mezi = Math.round(srovnano.get(bz));
+                   srovnanoPodruhe.add(mezi * mezi);
+               }
+           }
+               Collections.sort(srovnanoPodruhe);
+               Log.d("srovnano", "usporadano : " + String.valueOf(srovnanoPodruhe));
+               double odmocninka =  Math.sqrt(srovnanoPodruhe.get(0));
+               double KporovnaniPlus = odmocninka + DrawView.MujLevHorBody[0];
+               double KporovnaniMinus = odmocninka * -1 + DrawView.MujLevHorBody[0];
+                //furt facha
+               double NasCtverecek = 0;
+
+               for (int qrt = 0; qrt <= OcrGraphic.ctverce.size(); qrt++) {
+                   if (KporovnaniPlus == OcrGraphic.ctverce.get(qrt).left || KporovnaniMinus == OcrGraphic.ctverce.get(qrt).left) {
+                        NasCtverecek = qrt;
+                        Log.d("tady", "shoda");
+                        break;
+                   }
+               }
+               int poziceVarray = (int)NasCtverecek;
+               NasCtverecicek = OcrGraphic.ctverce.get(poziceVarray);
+
+           Log.d("ulohicka", "Nas X leva : " +  Prepocitej(DrawView.MujLevHorBody[0]) + " x prava : " + Prepocitej(DrawView.MujPravHorBody[0]));
+           Log.d("ulohicka", "Auto X leva : " + NasCtverecicek.left + " x prava " + NasCtverecicek.right);
+       }
 
 
 
@@ -88,8 +131,9 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                     Log.d("OcrDetectorProcessor", "Text detected! " + item.getValue());
                     OcrGraphic graphic = new OcrGraphic(graphicOverlay, item);
                     graphicOverlay.add(graphic);
-                    if (Prepocitej(DrawView.MujLevHorBody[0]) < OcrGraphic.Zleva && Prepocitej(DrawView.MujPravHorBody[0]) > OcrGraphic.Zprava && Prepocitej(DrawView.MujLevHorBody[1]) < OcrGraphic.Zhora && Prepocitej(DrawView.MujLevDolBody[1]) > OcrGraphic.Zdola)
-                    {
+
+                    if(Prepocitej(DrawView.MujLevHorBody[0]) <= NasCtverecicek.left && Prepocitej(DrawView.MujPravHorBody[0]) >= NasCtverecicek.right) {
+                        Log.d("ulohicka", "hotovo");
                         GlobalUlohaText += item.getValue();
                     }
                     //OcrCaptureActivity.PreviewPole.setText(GlobalUlohaText);
